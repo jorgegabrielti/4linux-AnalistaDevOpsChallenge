@@ -1,4 +1,4 @@
-# ![Coffee Shop Logo](https://raw.githubusercontent.com/juice-shop/juice-shop/master/frontend/src/assets/public/images/CoffeeShop_Logo.png) OWASP Coffee Shop
+# ![Coffee Shop Logo](https://raw.githubusercontent.com/thaycafe/coffee-shop/master/frontend/src/assets/public/images/CoffeeShop_Logo.png) OWASP Coffee Shop
 
 Coffee shop is a forked Coffee shop application, that is is probably the most modern and sophisticated insecure web application! It can be used in security
 trainings, awareness demos, CTFs and as a guinea pig for security tools! Coffee Shop encompasses vulnerabilities from the
