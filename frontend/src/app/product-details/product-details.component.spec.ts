@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2023 Bjoern Kimminich & the OWASP Juice Shop contributors.
+ * Copyright (c) 2014-2023 Bjoern Kimminich & the OWASP Coffee Shop contributors.
  * SPDX-License-Identifier: MIT
  */
 
@@ -101,13 +101,13 @@ describe('ProductDetailsComponent', () => {
 
   it('should post review with user email as author', () => {
     component.data = { productData: { id: 42 } as Product }
-    userService.whoAmI.and.returnValue(of({ email: 'horst@juice-sh.op' }))
+    userService.whoAmI.and.returnValue(of({ email: 'horst@Coffee-sh.op' }))
     component.ngOnInit()
     const textArea: HTMLTextAreaElement = fixture.debugElement.query(By.css('textarea')).nativeElement
     textArea.value = 'Great product!'
     const buttonDe = fixture.debugElement.query(By.css('#submitButton'))
     buttonDe.triggerEventHandler('click', null)
-    const reviewObject = { message: 'Great product!', author: 'horst@juice-sh.op' }
+    const reviewObject = { message: 'Great product!', author: 'horst@Coffee-sh.op' }
     expect(productReviewService.create.calls.count()).toBe(1)
     expect(productReviewService.create.calls.argsFor(0)[0]).toBe(42)
     expect(productReviewService.create.calls.argsFor(0)[1]).toEqual(reviewObject)
@@ -152,21 +152,21 @@ describe('ProductDetailsComponent', () => {
 
   it('should open a modal dialog with review editor', () => {
     component.data = { productData: { id: 42 } as Product }
-    userService.whoAmI.and.returnValue(of({ email: 'horst@juice-sh.op' }))
-    productReviewService.get.and.returnValue(of([{ id: '42', message: 'Great product!', author: 'horst@juice-sh.op' }]))
+    userService.whoAmI.and.returnValue(of({ email: 'horst@Coffee-sh.op' }))
+    productReviewService.get.and.returnValue(of([{ id: '42', message: 'Great product!', author: 'horst@Coffee-sh.op' }]))
     component.ngOnInit()
     fixture.detectChanges()
     const buttonDe = fixture.debugElement.query(By.css('div.review-text'))
     buttonDe.triggerEventHandler('click', null)
     expect(dialog.open.calls.count()).toBe(1)
     expect(dialog.open.calls.argsFor(0)[0]).toBe(ProductReviewEditComponent)
-    expect(dialog.open.calls.argsFor(0)[1].data).toEqual({ reviewData: { id: '42', message: 'Great product!', author: 'horst@juice-sh.op' } })
+    expect(dialog.open.calls.argsFor(0)[1].data).toEqual({ reviewData: { id: '42', message: 'Great product!', author: 'horst@Coffee-sh.op' } })
   })
 
   it('should refresh reviews of product after editing a review', () => {
     component.data = { productData: { id: 42 } as Product }
-    userService.whoAmI.and.returnValue(of({ email: 'horst@juice-sh.op' }))
-    productReviewService.get.and.returnValue(of([{ id: '42', message: 'Great product!', author: 'horst@juice-sh.op' }]))
+    userService.whoAmI.and.returnValue(of({ email: 'horst@Coffee-sh.op' }))
+    productReviewService.get.and.returnValue(of([{ id: '42', message: 'Great product!', author: 'horst@Coffee-sh.op' }]))
     component.ngOnInit()
     fixture.detectChanges()
     const buttonDe = fixture.debugElement.query(By.css('div.review-text'))

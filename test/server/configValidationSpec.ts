@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2023 Bjoern Kimminich & the OWASP Juice Shop contributors.
+ * Copyright (c) 2014-2023 Bjoern Kimminich & the OWASP Coffee Shop contributors.
  * SPDX-License-Identifier: MIT
  */
 
@@ -16,20 +16,20 @@ describe('configValidation', () => {
     it('should accept a valid config', () => {
       const products = [
         {
-          name: 'Apple Juice',
+          name: 'Apple Coffee',
           useForChristmasSpecialChallenge: true
         },
         {
-          name: 'Orange Juice',
+          name: 'Orange Coffee',
           urlForProductTamperingChallenge: 'foobar'
         },
         {
-          name: 'Melon Juice',
+          name: 'Melon Coffee',
           fileForRetrieveBlueprintChallenge: 'foobar',
           exifForBlueprintChallenge: ['OpenSCAD']
         },
         {
-          name: 'Rippertuer Special Juice',
+          name: 'Rippertuer Special Coffee',
           keywordsForPastebinDataLeakChallenge: ['bla', 'blubb']
         }
       ]
@@ -40,7 +40,7 @@ describe('configValidation', () => {
     it('should fail if multiple products are configured for the same challenge', () => {
       const products = [
         {
-          name: 'Apple Juice',
+          name: 'Apple Coffee',
           useForChristmasSpecialChallenge: true
         },
         {
@@ -48,11 +48,11 @@ describe('configValidation', () => {
           useForChristmasSpecialChallenge: true
         },
         {
-          name: 'Orange Juice',
+          name: 'Orange Coffee',
           urlForProductTamperingChallenge: 'foobar'
         },
         {
-          name: 'Melon Juice',
+          name: 'Melon Coffee',
           fileForRetrieveBlueprintChallenge: 'foobar',
           exifForBlueprintChallenge: ['OpenSCAD']
         }
@@ -64,11 +64,11 @@ describe('configValidation', () => {
     it('should fail if a required challenge product is missing', () => {
       const products = [
         {
-          name: 'Apple Juice',
+          name: 'Apple Coffee',
           useForChristmasSpecialChallenge: true
         },
         {
-          name: 'Orange Juice',
+          name: 'Orange Coffee',
           urlForProductTamperingChallenge: 'foobar'
         }
       ]
@@ -81,20 +81,20 @@ describe('configValidation', () => {
     it('should accept a valid config', () => {
       const products = [
         {
-          name: 'Apple Juice',
+          name: 'Apple Coffee',
           useForChristmasSpecialChallenge: true
         },
         {
-          name: 'Orange Juice',
+          name: 'Orange Coffee',
           urlForProductTamperingChallenge: 'foobar'
         },
         {
-          name: 'Melon Juice',
+          name: 'Melon Coffee',
           fileForRetrieveBlueprintChallenge: 'foobar',
           exifForBlueprintChallenge: ['OpenSCAD']
         },
         {
-          name: 'Rippertuer Special Juice',
+          name: 'Rippertuer Special Coffee',
           keywordsForPastebinDataLeakChallenge: ['bla', 'blubb']
         }
       ]
@@ -105,19 +105,19 @@ describe('configValidation', () => {
     it('should fail if product has no exifForBlueprintChallenge', () => {
       const products = [
         {
-          name: 'Apple Juice',
+          name: 'Apple Coffee',
           useForChristmasSpecialChallenge: true
         },
         {
-          name: 'Orange Juice',
+          name: 'Orange Coffee',
           urlForProductTamperingChallenge: 'foobar'
         },
         {
-          name: 'Melon Juice',
+          name: 'Melon Coffee',
           fileForRetrieveBlueprintChallenge: 'foobar'
         },
         {
-          name: 'Rippertuer Special Juice',
+          name: 'Rippertuer Special Coffee',
           keywordsForPastebinDataLeakChallenge: ['bla', 'blubb']
         }
       ]
@@ -130,20 +130,20 @@ describe('configValidation', () => {
     it('should accept a valid config', () => {
       const products = [
         {
-          name: 'Apple Juice',
+          name: 'Apple Coffee',
           useForChristmasSpecialChallenge: true
         },
         {
-          name: 'Orange Juice',
+          name: 'Orange Coffee',
           urlForProductTamperingChallenge: 'foobar'
         },
         {
-          name: 'Melon Juice',
+          name: 'Melon Coffee',
           fileForRetrieveBlueprintChallenge: 'foobar',
           exifForBlueprintChallenge: ['OpenSCAD']
         },
         {
-          name: 'Rippertuer Special Juice',
+          name: 'Rippertuer Special Coffee',
           keywordsForPastebinDataLeakChallenge: ['bla', 'blubb']
         }
       ]
@@ -154,7 +154,7 @@ describe('configValidation', () => {
     it('should fail if a product is configured for multiple challenges', () => {
       const products = [
         {
-          name: 'Apple Juice',
+          name: 'Apple Coffee',
           useForChristmasSpecialChallenge: true,
           urlForProductTamperingChallenge: 'foobar'
         }
@@ -168,16 +168,16 @@ describe('configValidation', () => {
     it('should accept a valid config', () => {
       const products = [
         {
-          name: 'Apple Juice'
+          name: 'Apple Coffee'
         },
         {
-          name: 'Orange Juice'
+          name: 'Orange Coffee'
         },
         {
-          name: 'Melon Juice'
+          name: 'Melon Coffee'
         },
         {
-          name: 'Rippertuer Special Juice'
+          name: 'Rippertuer Special Coffee'
         }
       ]
 
@@ -187,13 +187,13 @@ describe('configValidation', () => {
     it('should fail if less than 4 products are configured', () => {
       const products = [
         {
-          name: 'Apple Juice'
+          name: 'Apple Coffee'
         },
         {
-          name: 'Orange Juice'
+          name: 'Orange Coffee'
         },
         {
-          name: 'Melon Juice'
+          name: 'Melon Coffee'
         }
       ]
 
@@ -396,8 +396,8 @@ describe('configValidation', () => {
   it('should accept a config with valid schema', () => {
     const config = {
       application: {
-        domain: 'juice-b.ox',
-        name: 'OWASP Juice Box',
+        domain: 'Coffee-b.ox',
+        name: 'OWASP Coffee Box',
         welcomeBanner: {
           showOnFirstStart: false
         }
@@ -414,7 +414,7 @@ describe('configValidation', () => {
     const config = {
       application: {
         domain: 42,
-        id: 'OWASP Juice Box',
+        id: 'OWASP Coffee Box',
         welcomeBanner: {
           showOnFirstStart: 'yes'
         }

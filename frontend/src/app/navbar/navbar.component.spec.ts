@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2023 Bjoern Kimminich & the OWASP Juice Shop contributors.
+ * Copyright (c) 2014-2023 Bjoern Kimminich & the OWASP Coffee Shop contributors.
  * SPDX-License-Identifier: MIT
  */
 
@@ -162,7 +162,7 @@ describe('NavbarComponent', () => {
   it('should use default application name if not customized', () => {
     configurationService.getApplicationConfiguration.and.returnValue(of({}))
     component.ngOnInit()
-    expect(component.applicationName).toBe('OWASP Juice Shop')
+    expect(component.applicationName).toBe('OWASP Coffee Shop')
   })
 
   it('should use custom application name URL if configured', () => {
@@ -225,9 +225,9 @@ describe('NavbarComponent', () => {
   })
 
   it('forwards to search result with search query as URL parameter', fakeAsync(() => {
-    component.search('lemon juice')
+    component.search('lemon Coffee')
     tick()
-    expect(location.path()).toBe(encodeURI('/search?q=lemon juice'))
+    expect(location.path()).toBe(encodeURI('/search?q=lemon Coffee'))
   }))
 
   it('forwards to search result with empty search criteria if no search query is present', fakeAsync(() => {

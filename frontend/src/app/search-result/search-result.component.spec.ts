@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2023 Bjoern Kimminich & the OWASP Juice Shop contributors.
+ * Copyright (c) 2014-2023 Bjoern Kimminich & the OWASP Coffee Shop contributors.
  * SPDX-License-Identifier: MIT
  */
 
@@ -206,20 +206,20 @@ describe('SearchResultComponent', () => {
     basketService.find.and.returnValue(of({ Products: [] }))
     productService.search.and.returnValue(of([]))
     basketService.save.and.returnValue(of({ ProductId: 1 }))
-    productService.get.and.returnValue(of({ name: 'Cherry Juice' }))
+    productService.get.and.returnValue(of({ name: 'Cherry Coffee' }))
     sessionStorage.setItem('bid', '4711')
     component.addToBasket(1)
     expect(basketService.find).toHaveBeenCalled()
     expect(basketService.save).toHaveBeenCalled()
     expect(productService.get).toHaveBeenCalled()
-    expect(translateService.get).toHaveBeenCalledWith('BASKET_ADD_PRODUCT', { product: 'Cherry Juice' })
+    expect(translateService.get).toHaveBeenCalledWith('BASKET_ADD_PRODUCT', { product: 'Cherry Coffee' })
   })
 
   it('should translate BASKET_ADD_PRODUCT message', () => {
     basketService.find.and.returnValue(of({ Products: [] }))
     productService.search.and.returnValue(of([]))
     basketService.save.and.returnValue(of({ ProductId: 1 }))
-    productService.get.and.returnValue(of({ name: 'Cherry Juice' }))
+    productService.get.and.returnValue(of({ name: 'Cherry Coffee' }))
     translateService.get.and.returnValue(of('Translation of BASKET_ADD_PRODUCT'))
     sessionStorage.setItem('bid', '4711')
     component.addToBasket(1)
@@ -230,10 +230,10 @@ describe('SearchResultComponent', () => {
   })
 
   it('should add similar product to basket', () => {
-    basketService.find.and.returnValue(of({ Products: [{ id: 1 }, { id: 2, name: 'Tomato Juice', BasketItem: { id: 42 } }] }))
+    basketService.find.and.returnValue(of({ Products: [{ id: 1 }, { id: 2, name: 'Tomato Coffee', BasketItem: { id: 42 } }] }))
     basketService.get.and.returnValue(of({ id: 42, quantity: 5 }))
     basketService.put.and.returnValue(of({ ProductId: 2 }))
-    productService.get.and.returnValue(of({ name: 'Tomato Juice' }))
+    productService.get.and.returnValue(of({ name: 'Tomato Coffee' }))
     translateService.get.and.returnValue(of(undefined))
     sessionStorage.setItem('bid', '4711')
     component.addToBasket(2)
@@ -241,14 +241,14 @@ describe('SearchResultComponent', () => {
     expect(basketService.get).toHaveBeenCalled()
     expect(basketService.put).toHaveBeenCalled()
     expect(productService.get).toHaveBeenCalled()
-    expect(translateService.get).toHaveBeenCalledWith('BASKET_ADD_SAME_PRODUCT', { product: 'Tomato Juice' })
+    expect(translateService.get).toHaveBeenCalledWith('BASKET_ADD_SAME_PRODUCT', { product: 'Tomato Coffee' })
   })
 
   it('should translate BASKET_ADD_SAME_PRODUCT message', () => {
-    basketService.find.and.returnValue(of({ Products: [{ id: 1 }, { id: 2, name: 'Tomato Juice', BasketItem: { id: 42 } }] }))
+    basketService.find.and.returnValue(of({ Products: [{ id: 1 }, { id: 2, name: 'Tomato Coffee', BasketItem: { id: 42 } }] }))
     basketService.get.and.returnValue(of({ id: 42, quantity: 5 }))
     basketService.put.and.returnValue(of({ ProductId: 2 }))
-    productService.get.and.returnValue(of({ name: 'Tomato Juice' }))
+    productService.get.and.returnValue(of({ name: 'Tomato Coffee' }))
     translateService.get.and.returnValue(of('Translation of BASKET_ADD_SAME_PRODUCT'))
     sessionStorage.setItem('bid', '4711')
     component.addToBasket(2)
@@ -274,7 +274,7 @@ describe('SearchResultComponent', () => {
   }))
 
   it('should not add anything to basket on error retrieving existing basket item', fakeAsync(() => {
-    basketService.find.and.returnValue(of({ Products: [{ id: 1 }, { id: 2, name: 'Tomato Juice', BasketItem: { id: 42 } }] }))
+    basketService.find.and.returnValue(of({ Products: [{ id: 1 }, { id: 2, name: 'Tomato Coffee', BasketItem: { id: 42 } }] }))
     basketService.get.and.returnValue(throwError('Error'))
     sessionStorage.setItem('bid', '4711')
     component.addToBasket(2)
@@ -282,7 +282,7 @@ describe('SearchResultComponent', () => {
   }))
 
   it('should log errors retrieving basket item directly to browser console', fakeAsync(() => {
-    basketService.find.and.returnValue(of({ Products: [{ id: 1 }, { id: 2, name: 'Tomato Juice', BasketItem: { id: 42 } }] }))
+    basketService.find.and.returnValue(of({ Products: [{ id: 1 }, { id: 2, name: 'Tomato Coffee', BasketItem: { id: 42 } }] }))
     basketService.get.and.returnValue(throwError('Error'))
     sessionStorage.setItem('bid', '4711')
     console.log = jasmine.createSpy('log')
@@ -291,7 +291,7 @@ describe('SearchResultComponent', () => {
   }))
 
   it('should log errors updating basket directly to browser console', fakeAsync(() => {
-    basketService.find.and.returnValue(of({ Products: [{ id: 1 }, { id: 2, name: 'Tomato Juice', BasketItem: { id: 42 } }] }))
+    basketService.find.and.returnValue(of({ Products: [{ id: 1 }, { id: 2, name: 'Tomato Coffee', BasketItem: { id: 42 } }] }))
     basketService.put.and.returnValue(throwError('Error'))
     sessionStorage.setItem('bid', '4711')
     console.log = jasmine.createSpy('log')
@@ -300,7 +300,7 @@ describe('SearchResultComponent', () => {
   }))
 
   it('should not add anything to basket on error retrieving product associated with basket item', fakeAsync(() => {
-    basketService.find.and.returnValue(of({ Products: [{ id: 1 }, { id: 2, name: 'Tomato Juice', BasketItem: { id: 42 } }] }))
+    basketService.find.and.returnValue(of({ Products: [{ id: 1 }, { id: 2, name: 'Tomato Coffee', BasketItem: { id: 42 } }] }))
     productService.get.and.returnValue(throwError('Error'))
     sessionStorage.setItem('bid', '4711')
     component.addToBasket(2)
@@ -308,7 +308,7 @@ describe('SearchResultComponent', () => {
   }))
 
   it('should log errors retrieving product associated with basket item directly to browser console', fakeAsync(() => {
-    basketService.find.and.returnValue(of({ Products: [{ id: 1 }, { id: 2, name: 'Tomato Juice', BasketItem: { id: 42 } }] }))
+    basketService.find.and.returnValue(of({ Products: [{ id: 1 }, { id: 2, name: 'Tomato Coffee', BasketItem: { id: 42 } }] }))
     productService.get.and.returnValue(throwError('Error'))
     sessionStorage.setItem('bid', '4711')
     console.log = jasmine.createSpy('log')

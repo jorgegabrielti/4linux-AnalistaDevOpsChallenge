@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2023 Bjoern Kimminich & the OWASP Juice Shop contributors.
+ * Copyright (c) 2014-2023 Bjoern Kimminich & the OWASP Coffee Shop contributors.
  * SPDX-License-Identifier: MIT
  */
 
@@ -171,14 +171,14 @@ describe('AccountingComponent', () => {
 
   it('should show confirmation on modifying quantity of a product', fakeAsync(() => {
     quantityService.put.and.returnValue(of({ ProductId: 1 }))
-    component.tableData = [{ id: 1, name: 'Apple Juice' }]
+    component.tableData = [{ id: 1, name: 'Apple Coffee' }]
     component.modifyQuantity(1, 100)
     fixture.detectChanges()
     expect(snackBar.open).toHaveBeenCalled()
   }))
 
   it('should show confirmation on modifying price of a product', fakeAsync(() => {
-    productService.put.and.returnValue(of({ name: 'Apple Juice' }))
+    productService.put.and.returnValue(of({ name: 'Apple Coffee' }))
     component.modifyPrice(1, 100)
     fixture.detectChanges()
     expect(snackBar.open).toHaveBeenCalled()
@@ -186,7 +186,7 @@ describe('AccountingComponent', () => {
 
   it('should modify quantity of a product', () => {
     quantityService.put.and.returnValue(of({ ProductId: 1 }))
-    component.tableData = [{ id: 1, name: 'Apple Juice' }]
+    component.tableData = [{ id: 1, name: 'Apple Coffee' }]
     quantityService.getAll.and.returnValue(of([]))
     component.modifyQuantity(1, 100)
     expect(quantityService.put).toHaveBeenCalled()
@@ -195,7 +195,7 @@ describe('AccountingComponent', () => {
 
   it('should modify price of a product', () => {
     productService.search.and.returnValue(of([]))
-    productService.put.and.returnValue(of({ name: 'Apple Juice' }))
+    productService.put.and.returnValue(of({ name: 'Apple Coffee' }))
     component.modifyPrice(1, 100)
     expect(productService.put).toHaveBeenCalled()
     expect(productService.search).toHaveBeenCalled()

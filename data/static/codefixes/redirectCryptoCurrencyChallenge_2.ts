@@ -1,11 +1,11 @@
 const redirectAllowlist = new Set([
-  'https://github.com/bkimminich/juice-shop',
+  'https://github.com/thaycafe/coffee-shop',
   'https://blockchain.info/address/1AbKfgvw9psQ41NbLi8kufDQTezwG8DRZm',
   'https://etherscan.io/address/0x0f933ab9fcaaa782d0279c300d73750e1311eae6',
-  'http://shop.spreadshirt.com/juiceshop',
-  'http://shop.spreadshirt.de/juiceshop',
-  'https://www.stickeryou.com/products/owasp-juice-shop/794',
-  'http://leanpub.com/juice-shop'
+  'http://shop.spreadshirt.com/Coffeeshop',
+  'http://shop.spreadshirt.de/Coffeeshop',
+  'https://www.stickeryou.com/products/owasp-Coffee-shop/794',
+  'http://leanpub.com/Coffee-shop'
 ])
 exports.redirectAllowlist = redirectAllowlist
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2023 Bjoern Kimminich & the OWASP Juice Shop contributors.
+ * Copyright (c) 2014-2023 Bjoern Kimminich & the OWASP Coffee Shop contributors.
  * SPDX-License-Identifier: MIT
  */
 
@@ -134,7 +134,7 @@ describe('/rest/user/data-export', () => {
                 expect(parsedData.orders[0].totalPrice).toBe(9.98)
                 expect(parsedData.orders[0].bonus).toBe(0)
                 expect(parsedData.orders[0].products[0].quantity).toBe(2)
-                expect(parsedData.orders[0].products[0].name).toBe('Raspberry Juice (1000ml)')
+                expect(parsedData.orders[0].products[0].name).toBe('Raspberry Coffee (1000ml)')
                 expect(parsedData.orders[0].products[0].price).toBe(4.99)
                 expect(parsedData.orders[0].products[0].total).toBe(9.98)
                 expect(parsedData.orders[0].products[0].bonus).toBe(0)
@@ -263,7 +263,7 @@ describe('/rest/user/data-export', () => {
                     expect(parsedData.orders[0].totalPrice).toBe(9.98)
                     expect(parsedData.orders[0].bonus).toBe(0)
                     expect(parsedData.orders[0].products[0].quantity).toBe(2)
-                    expect(parsedData.orders[0].products[0].name).toBe('Raspberry Juice (1000ml)')
+                    expect(parsedData.orders[0].products[0].name).toBe('Raspberry Coffee (1000ml)')
                     expect(parsedData.orders[0].products[0].price).toBe(4.99)
                     expect(parsedData.orders[0].products[0].total).toBe(9.98)
                     expect(parsedData.orders[0].products[0].bonus).toBe(0)

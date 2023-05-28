@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2023 Bjoern Kimminich & the OWASP Juice Shop contributors.
+ * Copyright (c) 2014-2023 Bjoern Kimminich & the OWASP Coffee Shop contributors.
  * SPDX-License-Identifier: MIT
  */
 
@@ -12,6 +12,6 @@ const challenges = require('../data/datacache').challenges
 module.exports = function servePremiumContent () {
   return (req: Request, res: Response) => {
     challengeUtils.solveIf(challenges.premiumPaywallChallenge, () => { return true })
-    res.sendFile(path.resolve('frontend/dist/frontend/assets/private/JuiceShop_Wallpaper_1920x1080_VR.jpg'))
+    res.sendFile(path.resolve('frontend/dist/frontend/assets/private/CoffeeShop_Wallpaper_1920x1080_VR.jpg'))
   }
 }

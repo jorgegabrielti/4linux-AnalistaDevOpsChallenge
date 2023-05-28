@@ -141,7 +141,7 @@ products:
     price: 0.99
     image: 'http://juicystudio.com/img/logo.gif'
     keywordsForPastebinDataLeakChallenge:
-      - juicenote
+      - Coffeenote
       - magische firefox suche
   -
     name: 'Fox Plush'

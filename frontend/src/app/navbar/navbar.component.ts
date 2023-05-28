@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2023 Bjoern Kimminich & the OWASP Juice Shop contributors.
+ * Copyright (c) 2014-2023 Bjoern Kimminich & the OWASP Coffee Shop contributors.
  * SPDX-License-Identifier: MIT
  */
 
@@ -56,9 +56,9 @@ export class NavbarComponent implements OnInit {
   public languages: any = []
   public selectedLanguage: string = 'placeholder'
   public version: string = ''
-  public applicationName: string = 'OWASP Juice Shop'
+  public applicationName: string = 'OWASP Coffee Shop'
   public showGitHubLink: boolean = true
-  public logoSrc: string = 'assets/public/images/JuiceShop_Logo.png'
+  public logoSrc: string = 'assets/public/images/CoffeeShop_Logo.png'
   public scoreBoardVisible: boolean = false
   public shortKeyLang: string = 'placeholder'
   public itemTotal = 0

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2023 Bjoern Kimminich & the OWASP Juice Shop contributors.
+ * Copyright (c) 2014-2023 Bjoern Kimminich & the OWASP Coffee Shop contributors.
  * SPDX-License-Identifier: MIT
  */
 
@@ -99,13 +99,13 @@ describe('/ftp', () => {
   it('GET the package.json.bak file by using Poison Null Byte attack with .pdf suffix', () => {
     return frisby.get(URL + '/ftp/package.json.bak%00.pdf')
       .expect('status', 200)
-      .expect('bodyContains', '"name": "juice-shop",')
+      .expect('bodyContains', '"name": "Coffee-shop",')
   })
 
   it('GET the package.json.bak file by using Poison Null Byte attack with .md suffix', () => {
     return frisby.get(URL + '/ftp/package.json.bak%00.md')
       .expect('status', 200)
-      .expect('bodyContains', '"name": "juice-shop",')
+      .expect('bodyContains', '"name": "Coffee-shop",')
   })
 
   it('GET a restricted file directly from file system path on server by tricking route definitions fails with 403 error', () => {

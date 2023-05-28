@@ -98,27 +98,27 @@ products:
       - taylor swift
       - katy perry
   -
-    name: '7MS #230: Pentesting OWASP Juice Shop - Part 1'
-    description: 'Today we`re kicking of a multipart series all about hacking the OWASP Juice Shop which is "an intentionally insecure webapp for security trainings written entirely in Javascript which encompasses the entire OWASP Top Ten and other severe security flaws."'
+    name: '7MS #230: Pentesting OWASP Coffee Shop - Part 1'
+    description: 'Today we`re kicking of a multipart series all about hacking the OWASP Coffee Shop which is "an intentionally insecure webapp for security trainings written entirely in Javascript which encompasses the entire OWASP Top Ten and other severe security flaws."'
     price: 1.99
     image: 'https://i.ytimg.com/vi/IC6m249zvI0/hqdefault.jpg'
   -
-    name: '7MS #231: Pentesting OWASP Juice Shop - Part 2'
-    description: 'Today we`re continuing our series on hacking apart the OWASP Juice Shop which is "an intentionally insecure webapp for security trainings written entirely in Javascript which encompasses the entire OWASP Top Ten and other severe security flaws."'
+    name: '7MS #231: Pentesting OWASP Coffee Shop - Part 2'
+    description: 'Today we`re continuing our series on hacking apart the OWASP Coffee Shop which is "an intentionally insecure webapp for security trainings written entirely in Javascript which encompasses the entire OWASP Top Ten and other severe security flaws."'
     price: 1.99
     image: hqdefault.jpg
   -
-    name: '7MS #232: Pentesting OWASP Juice Shop - Part 3'
-    description: 'Today is part <strong>three</strong> of our continuing series on attacking the OWASP Juice Shop which is "an intentionally insecure webapp for security trainings written entirely in Javascript which encompasses the entire OWASP Top Ten and other severe security flaws."'
+    name: '7MS #232: Pentesting OWASP Coffee Shop - Part 3'
+    description: 'Today is part <strong>three</strong> of our continuing series on attacking the OWASP Coffee Shop which is "an intentionally insecure webapp for security trainings written entirely in Javascript which encompasses the entire OWASP Top Ten and other severe security flaws."'
     price: 1.99
     image: hqdefault.jpg
   -
-    name: '7MS #233: Pentesting OWASP Juice Shop - Part 4'
-    description: 'Today is part <strong>FOUR</strong> of our continuing series on attacking the OWASP Juice Shop which is "an intentionally insecure webapp for security trainings written entirely in Javascript which encompasses the entire OWASP Top Ten and other severe security flaws."'
+    name: '7MS #233: Pentesting OWASP Coffee Shop - Part 4'
+    description: 'Today is part <strong>FOUR</strong> of our continuing series on attacking the OWASP Coffee Shop which is "an intentionally insecure webapp for security trainings written entirely in Javascript which encompasses the entire OWASP Top Ten and other severe security flaws."'
     price: 1.99
     image: hqdefault.jpg
   -
-    name: '7MS #234: Pentesting OWASP Juice Shop - Part 5'
-    description: 'Today is part <strong>FIVE</strong> (insert menacing voice: "<em>the final chapter!!!</em>) of our series on attacking the <a href="https://www.owasp.org/index.php/OWASP_Juice_Shop_Project" target="_blank">OWASP Juice Shop</a> which is "an intentionally insecure webapp for security trainings written entirely in Javascript which encompasses the entire OWASP Top Ten and other severe security flaws."'
+    name: '7MS #234: Pentesting OWASP Coffee Shop - Part 5'
+    description: 'Today is part <strong>FIVE</strong> (insert menacing voice: "<em>the final chapter!!!</em>) of our series on attacking the <a href="https://www.owasp.org/index.php/OWASP_Coffee_Shop_Project" target="_blank">OWASP Coffee Shop</a> which is "an intentionally insecure webapp for security trainings written entirely in Javascript which encompasses the entire OWASP Top Ten and other severe security flaws."'
     price: 1.99
     image: hqdefault.jpg

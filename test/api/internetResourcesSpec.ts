@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2023 Bjoern Kimminich & the OWASP Juice Shop contributors.
+ * Copyright (c) 2014-2023 Bjoern Kimminich & the OWASP Coffee Shop contributors.
  * SPDX-License-Identifier: MIT
  */
 
@@ -35,10 +35,10 @@ describe('Required Internet resource', () => {
       return frisby.get('https://pastebin.com/t8jqE1y7')
         .expect('status', 200)
         .expect('bodyContains', 'Fixed a bug that, when this plugin was installed together with both the')
-        .expect('bodyContains', 'JuiceNote')
+        .expect('bodyContains', 'CoffeeNote')
         .expect('bodyContains', 'Magische Firefox Suche')
         .expect('bodyContains', 'plugins, lwt your browser throw a')
-        .expect('bodyContains', 'JuiceOverFlowError')
+        .expect('bodyContains', 'CoffeeOverFlowError')
         .expect('bodyContains', 'The problem can still occur post-fix but at least now less frequently!')
     })
 
@@ -54,7 +54,7 @@ describe('Required Internet resource', () => {
   it('Comment on "Top 10 Fruits you probably dont know" blog post with PasteBin paste URL spoiler available', () => {
     return frisby.get('https://listverse.disqus.com/top_20_fruits_you_probably_don039t_know/latest.rss')
       .expect('status', 200)
-      .expect('bodyContains', 'Rippertuer Special Juice')
+      .expect('bodyContains', 'Rippertuer Special Coffee')
       .expect('bodyContains', 'https://pastebin.com/90dUgd7s')
   })
 

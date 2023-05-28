@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2023 Bjoern Kimminich & the OWASP Juice Shop contributors.
+ * Copyright (c) 2014-2023 Bjoern Kimminich & the OWASP Coffee Shop contributors.
  * SPDX-License-Identifier: MIT
  */
 
@@ -20,7 +20,7 @@ export class LocalBackupService {
 
   constructor (private readonly cookieService: CookieService, private readonly challengeService: ChallengeService, private readonly snackBarHelperService: SnackBarHelperService, private readonly snackBar: MatSnackBar) { }
 
-  save (fileName: string = 'owasp_juice_shop') {
+  save (fileName: string = 'owasp_Coffee_shop') {
     const backup: Backup = { version: this.VERSION }
 
     backup.scoreBoard = {

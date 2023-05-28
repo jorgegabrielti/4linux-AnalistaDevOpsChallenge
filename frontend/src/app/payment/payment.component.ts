@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2023 Bjoern Kimminich & the OWASP Juice Shop contributors.
+ * Copyright (c) 2014-2023 Bjoern Kimminich & the OWASP Coffee Shop contributors.
  * SPDX-License-Identifier: MIT
  */
 
@@ -46,7 +46,7 @@ export class PaymentComponent implements OnInit {
   public card: any = {}
   public twitterUrl = null
   public facebookUrl = null
-  public applicationName = 'OWASP Juice Shop'
+  public applicationName = 'OWASP Coffee Shop'
   private campaignCoupon: string
   public couponControl: UntypedFormControl = new UntypedFormControl('', [Validators.required, Validators.minLength(10), Validators.maxLength(10)])
   public clientDate: any

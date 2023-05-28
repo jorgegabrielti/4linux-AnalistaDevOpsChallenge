@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2023 Bjoern Kimminich & the OWASP Juice Shop contributors.
+ * Copyright (c) 2014-2023 Bjoern Kimminich & the OWASP Coffee Shop contributors.
  * SPDX-License-Identifier: MIT
  */
 
@@ -60,7 +60,7 @@ export class ScoreBoardComponent implements OnInit {
   public totalChallengesOfDifficulty: Challenge[][] = [[], [], [], [], [], []]
   public showContributionInfoBox: boolean = true
   public questionnaireUrl: string = 'https://forms.gle/2Tr5m1pqnnesApxN8'
-  public appName: string = 'OWASP Juice Shop'
+  public appName: string = 'OWASP Coffee Shop'
   public localBackupEnabled: boolean = true
   public showFeedbackButtons: boolean = true
 

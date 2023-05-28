@@ -1,7 +1,7 @@
 application:
-  domain: juice-b.ox
-  name: 'OWASP Juice Box'
-  customMetricsPrefix: juicebox
+  domain: Coffee-b.ox
+  name: 'OWASP Coffee Box'
+  customMetricsPrefix: Coffeebox
   welcomeBanner:
     showOnFirstStart: false
   chatBot:
