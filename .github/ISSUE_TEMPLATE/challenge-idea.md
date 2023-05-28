@@ -1,6 +1,6 @@
 ---
 name: "⭐Challenge idea"
-about: Idea for a new hacking challenge in OWASP Juice Shop
+about: Idea for a new hacking challenge in OWASP Coffee Shop
 title: '[⭐] '
 labels: challenge
 assignees: ''
@@ -18,7 +18,7 @@ Existing issues often contain information about workarounds, resolution, or prog
 
 ### Description
 
-<!-- ✍️--> A clear and concise description of the new hacking challenge and why the Juice Shop needs it...
+<!-- ✍️--> A clear and concise description of the new hacking challenge and why the Coffee Shop needs it...
 
 ### Underlying vulnerability/ies
 

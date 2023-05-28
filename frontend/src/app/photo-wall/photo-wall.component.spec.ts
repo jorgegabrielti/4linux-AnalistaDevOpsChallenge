@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2023 Bjoern Kimminich & the OWASP Juice Shop contributors.
+ * Copyright (c) 2014-2023 Bjoern Kimminich & the OWASP Coffee Shop contributors.
  * SPDX-License-Identifier: MIT
  */
 
@@ -131,7 +131,7 @@ describe('PhotoWallComponent', () => {
 
   it('should reinitizalise add memory form by calling resetForm', () => {
     component.form.get('image').setValue(new File([''], 'image'))
-    component.form.get('caption').setValue('Juice Party')
+    component.form.get('caption').setValue('Coffee Party')
     component.resetForm()
     expect(component.form.get('image').value).toBe('')
     expect(component.form.get('image').pristine).toBe(true)

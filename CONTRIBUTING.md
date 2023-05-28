@@ -1,13 +1,13 @@
-# Contributing [![GitHub contributors](https://img.shields.io/github/contributors/juice-shop/juice-shop.svg)](https://github.com/juice-shop/juice-shop/graphs/contributors) [![JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
+# Contributing [![GitHub contributors](https://img.shields.io/github/contributors/Coffee-shop/Coffee-shop.svg)](https://github.com/Coffee-shop/Coffee-shop/graphs/contributors) [![JavaScript Style Guide](https://img.shields.io/badge/code%20style-standard-brightgreen.svg)](http://standardjs.com/)
 
-![CI/CD Pipeline](https://github.com/juice-shop/juice-shop/workflows/CI/CD%20Pipeline/badge.svg?branch=develop)
-[![Test Coverage](https://api.codeclimate.com/v1/badges/6206c8f3972bcc97a033/test_coverage)](https://codeclimate.com/github/juice-shop/juice-shop/test_coverage)
-[![Maintainability](https://api.codeclimate.com/v1/badges/6206c8f3972bcc97a033/maintainability)](https://codeclimate.com/github/juice-shop/juice-shop/maintainability)
+![CI/CD Pipeline](https://github.com/Coffee-shop/Coffee-shop/workflows/CI/CD%20Pipeline/badge.svg?branch=develop)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/6206c8f3972bcc97a033/test_coverage)](https://codeclimate.com/github/Coffee-shop/Coffee-shop/test_coverage)
+[![Maintainability](https://api.codeclimate.com/v1/badges/6206c8f3972bcc97a033/maintainability)](https://codeclimate.com/github/Coffee-shop/Coffee-shop/maintainability)
 [![Cypress tests](https://img.shields.io/endpoint?url=https://dashboard.cypress.io/badge/detailed/3hrkhu/develop&style=flat&logo=cypress)](https://dashboard.cypress.io/projects/3hrkhu/runs)
-![Gitlab pipeline status](https://img.shields.io/gitlab/pipeline/bkimminich/juice-shop.svg)
-[![Crowdin](https://d322cqt584bo4o.cloudfront.net/owasp-juice-shop/localized.svg)](https://crowdin.com/project/owasp-juice-shop)
-![GitHub issues by-label "help wanted"](https://img.shields.io/github/issues/juice-shop/juice-shop/help%20wanted.svg)
-![GitHub issues by-label "good first issue"](https://img.shields.io/github/issues/juice-shop/juice-shop/good%20first%20issue.svg)
+![Gitlab pipeline status](https://img.shields.io/gitlab/pipeline/bkimminich/Coffee-shop.svg)
+[![Crowdin](https://d322cqt584bo4o.cloudfront.net/owasp-Coffee-shop/localized.svg)](https://crowdin.com/project/owasp-Coffee-shop)
+![GitHub issues by-label "help wanted"](https://img.shields.io/github/issues/Coffee-shop/Coffee-shop/help%20wanted.svg)
+![GitHub issues by-label "good first issue"](https://img.shields.io/github/issues/Coffee-shop/Coffee-shop/good%20first%20issue.svg)
 
 ## Code Contributions
 
@@ -23,9 +23,9 @@ The minimum requirements for code contributions are:
 
 You can find our detailed contribution guidelines over here:
 
-<https://pwning.owasp-juice.shop/part3/contribution.html>
+<https://pwning.owasp-Coffee.shop/part3/contribution.html>
 
 ## I18N Contributions
 
-Learn all about our crowd-sourced [translation project on Crowdin](https://crowdin.com/project/owasp-juice-shop)
-here: <https://pwning.owasp-juice.shop/part3/translation.html>
+Learn all about our crowd-sourced [translation project on Crowdin](https://crowdin.com/project/owasp-Coffee-shop)
+here: <https://pwning.owasp-Coffee.shop/part3/translation.html>

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2023 Bjoern Kimminich & the OWASP Juice Shop contributors.
+ * Copyright (c) 2014-2023 Bjoern Kimminich & the OWASP Coffee Shop contributors.
  * SPDX-License-Identifier: MIT
  */
 
@@ -164,7 +164,7 @@ describe('/rest/user/login', () => {
       })
   })
 
-  it('POST login with known email "admin@juice-sh.op" in SQL injection attack', () => {
+  it('POST login with known email "admin@Coffee-sh.op" in SQL injection attack', () => {
     return frisby.post(REST_URL + '/user/login', {
       header: jsonHeader,
       body: {
@@ -179,7 +179,7 @@ describe('/rest/user/login', () => {
       })
   })
 
-  it('POST login with known email "jim@juice-sh.op" in SQL injection attack', () => {
+  it('POST login with known email "jim@Coffee-sh.op" in SQL injection attack', () => {
     return frisby.post(REST_URL + '/user/login', {
       header: jsonHeader,
       body: {
@@ -194,7 +194,7 @@ describe('/rest/user/login', () => {
       })
   })
 
-  it('POST login with known email "bender@juice-sh.op" in SQL injection attack', () => {
+  it('POST login with known email "bender@Coffee-sh.op" in SQL injection attack', () => {
     return frisby.post(REST_URL + '/user/login', {
       header: jsonHeader,
       body: {
@@ -209,7 +209,7 @@ describe('/rest/user/login', () => {
       })
   })
 
-  it('POST login with non-existing email "acc0unt4nt@juice-sh.op" via UNION SELECT injection attack', () => {
+  it('POST login with non-existing email "acc0unt4nt@Coffee-sh.op" via UNION SELECT injection attack', () => {
     return frisby.post(REST_URL + '/user/login', {
       header: jsonHeader,
       body: {

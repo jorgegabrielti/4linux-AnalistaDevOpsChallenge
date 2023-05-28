@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2023 Bjoern Kimminich & the OWASP Juice Shop contributors.
+ * Copyright (c) 2014-2023 Bjoern Kimminich & the OWASP Coffee Shop contributors.
  * SPDX-License-Identifier: MIT
  */
 
@@ -41,10 +41,10 @@ describe('/api/Products', () => {
 
   it('POST new product is forbidden via public API', () => {
     return frisby.post(API_URL + '/Products', {
-      name: 'Dirt Juice (1000ml)',
+      name: 'Dirt Coffee (1000ml)',
       description: 'Made from ugly dirt.',
       price: 0.99,
-      image: 'dirt_juice.jpg'
+      image: 'dirt_Coffee.jpg'
     })
       .expect('status', 401)
   })
@@ -54,10 +54,10 @@ describe('/api/Products', () => {
       return frisby.post(API_URL + '/Products', {
         headers: authHeader,
         body: {
-          name: 'XSS Juice (42ml)',
+          name: 'XSS Coffee (42ml)',
           description: '<iframe src="javascript:alert(`xss`)">',
           price: 9999.99,
-          image: 'xss3juice.jpg'
+          image: 'xss3Coffee.jpg'
         }
       })
         .expect('header', 'content-type', /application\/json/)

@@ -1,7 +1,7 @@
 #!/bin/sh
 
 #
-# Copyright (c) 2014-2023 Bjoern Kimminich & the OWASP Juice Shop contributors.
+# Copyright (c) 2014-2023 Bjoern Kimminich & the OWASP Coffee Shop contributors.
 # SPDX-License-Identifier: MIT
 #
 
@@ -19,10 +19,10 @@ apt-get upgrade -qy
 apt-get install -qy apache2 docker-ce
 
 # Put the relevant files in place
-cp /tmp/juice-shop/default.conf /etc/apache2/sites-available/000-default.conf
+cp /tmp/Coffee-shop/default.conf /etc/apache2/sites-available/000-default.conf
 
-# Download and start docker image with Juice Shop
-docker run --restart=always -d -p 3000:3000 --name juice-shop bkimminich/juice-shop
+# Download and start docker image with Coffee Shop
+docker run --restart=always -d -p 3000:3000 --name Coffee-shop bkimminich/Coffee-shop
 
 # Enable proxy modules in apache and restart
 a2enmod proxy_http

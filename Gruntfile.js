@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2023 Bjoern Kimminich & the OWASP Juice Shop contributors.
+ * Copyright (c) 2014-2023 Bjoern Kimminich & the OWASP Coffee Shop contributors.
  * SPDX-License-Identifier: MIT
  */
 
@@ -58,7 +58,7 @@ module.exports = function (grunt) {
               'uploads/complaints/.gitkeep',
               'views/**'
             ],
-            dest: 'juice-shop_<%= pkg.version %>/'
+            dest: 'Coffee-shop_<%= pkg.version %>/'
           }
         ]
       }

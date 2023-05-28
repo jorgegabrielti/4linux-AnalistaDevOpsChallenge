@@ -1,8 +1,8 @@
 {
-  "name": "juice-shop",
+  "name": "Coffee-shop",
   "version": "6.2.0-SNAPSHOT",
   "description": "An intentionally insecure JavaScript Web Application",
-  "homepage": "http://owasp-juice.shop",
+  "homepage": "http://owasp-Coffee.shop",
   "author": "Björn Kimminich <bjoern.kimminich@owasp.org> (https://kimminich.de)",
   "contributors": [
     "Björn Kimminich",
@@ -14,7 +14,7 @@
     "Scar26",
     "CaptainFreak",
     "Supratik Das",
-    "JuiceShopBot",
+    "CoffeeShopBot",
     "the-pro",
     "Ziyang Li",
     "aaryan10",
@@ -116,10 +116,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/bkimminich/juice-shop.git"
+    "url": "https://github.com/thaycafe/coffee-shop.git"
   },
   "bugs": {
-    "url": "https://github.com/bkimminich/juice-shop/issues"
+    "url": "https://github.com/thaycafe/coffee-shop/issues"
   },
   "license": "MIT",
   "scripts": {

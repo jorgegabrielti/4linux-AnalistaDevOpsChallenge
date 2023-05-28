@@ -31,7 +31,7 @@ application:
     bottomProductImage: undefined.png
 challenges:
   showSolvedNotifications: false
-  overwriteUrlForProductTamperingChallenge: 'https://www.juicesummit.org/'
+  overwriteUrlForProductTamperingChallenge: 'https://www.Coffeesummit.org/'
 hackingInstructor:
   avatarImage: 'https://s3.amazonaws.com/heysummit-production/media/thumbnails/defaults/user_default_image_square_large.png'
 products:
@@ -41,7 +41,7 @@ products:
     description: "Every happy camper needs a unique camper mug. It's lightweight, durable and multifunctional. Use it for your favorite beverage or a hot meal, and attach it to your bag for easy access on a hike."
     image: 'https://cdn.shopify.com/s/files/1/0276/0474/6320/products/mockup-c4c074da_280x420.jpg?v=1590062996'
   -
-    name: 'OSS2020 - Juice Shop Track Sticker'
+    name: 'OSS2020 - Coffee Shop Track Sticker'
     price: 1.80
     description: "These stickers are printed on durable, high opacity adhesive vinyl which makes them perfect for regular use, as well as for covering other stickers or paint. The high-quality vinyl ensures there are no bubbles when applying the stickers."
     image: 'https://cdn.shopify.com/s/files/1/0276/0474/6320/products/mockup-306c4dc0_280x420.jpg?v=1591012423'
@@ -57,10 +57,10 @@ products:
     price: 20
     image: 'https://cdn.shopify.com/s/files/1/0276/0474/6320/products/tyr-industries-White1591704017_280x420.png?v=1591704032'
   -
-    name: 'Juice Summit 2021 Ticket'
+    name: 'Coffee Summit 2021 Ticket'
     price: 599
     description: 'SAVE THE DATE FOR THE 2021 EDITION OF THE SUMMIT, ON OCTOBER 7 & 8 AT THE SAME LOCATION – HILTON ANTWERP HOTEL 4* IN ANTWERP, BELGIUM.'
-    image: 'https://www.juicesummit.org/wp-content/themes/juicesummit/img/header-logo.png?V=2019'
+    image: 'https://www.Coffeesummit.org/wp-content/themes/Coffeesummit/img/header-logo.png?V=2019'
     reviews:
       - { text: 'Juicy!!!', author: bjoern }
   -
@@ -83,7 +83,7 @@ products:
     image: 'https://scontent-ham3-1.xx.fbcdn.net/v/t31.0-8/p960x960/16252385_1242375352521741_5387610698864437018_o.png?_nc_cat=102&_nc_sid=85a577&_nc_ohc=7VkZI-XvzkEAX_UDcOp&_nc_ht=scontent-ham3-1.xx&oh=b6e91cb5afbf2514ea123bde620a439c&oe=5F0B4065'
     useForChristmasSpecialChallenge: true
   -
-    name: 'Rippertuer Special Juice'
+    name: 'Rippertuer Special Coffee'
     description: 'Contains a magical collection of the rarest fruits gathered from all around the world, like Cherymoya Annona cherimola, Jabuticaba Myrciaria cauliflora, Bael Aegle marmelos... and others, at an unbelievable price! <br/><span style="color:red;">This item has been made unavailable because of lack of safety standards.</span>'
     price: 16.99
     image: undefined.jpg
@@ -91,11 +91,11 @@ products:
       - hueteroneel
       - eurogium edule
   -
-    name: 'OWASP Juice Shop Logo (3D-printed)'
+    name: 'OWASP Coffee Shop Logo (3D-printed)'
     description: 'This rare item was designed and handcrafted in Sweden. This is why it is so incredibly expensive despite its complete lack of purpose.'
     price: 99.99
     image: 3d_keychain.jpg # Exif metadata contains "OpenSCAD" as subtle hint...
-    fileForRetrieveBlueprintChallenge: JuiceShop.stl # ...to blueprint file type
+    fileForRetrieveBlueprintChallenge: CoffeeShop.stl # ...to blueprint file type
     exifForBlueprintChallenge:
       - ~
 memories:

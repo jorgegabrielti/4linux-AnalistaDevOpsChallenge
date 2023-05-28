@@ -1,5 +1,5 @@
 {
-  "name": "juice-shop",
+  "name": "Coffee-shop",
   "version": "14.5.1",
   "private": true,
   "description": "Probably the most modern and sophisticated insecure web application",
@@ -19,13 +19,13 @@
     "capture the flag",
     "awareness"
   ],
-  "homepage": "https://owasp-juice.shop",
+  "homepage": "https://owasp-Coffee.shop",
   "bugs": {
-    "url": "https://github.com/juice-shop/juice-shop/issues"
+    "url": "https://github.com/Coffee-shop/Coffee-shop/issues"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/juice-shop/juice-shop.git"
+    "url": "https://github.com/Coffee-shop/Coffee-shop.git"
   },
   "license": "MIT",
   "author": "Björn Kimminich <bjoern.kimminich@owasp.org> (https://kimminich.de)",
@@ -39,7 +39,7 @@
     "Scar26",
     "ShubhamPalriwala",
     "CaptainFreak",
-    "JuiceShopBot",
+    "CoffeeShopBot",
     "Supratik Das",
     "the-pro",
     "Ziyang Li",

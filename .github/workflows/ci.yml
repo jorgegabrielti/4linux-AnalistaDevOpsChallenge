@@ -46,7 +46,7 @@ jobs:
           npm run lint:config -- -f ./config/ctf.yml &&
           npm run lint:config -- -f ./config/default.yml &&
           npm run lint:config -- -f ./config/fbctf.yml &&
-          npm run lint:config -- -f ./config/juicebox.yml &&
+          npm run lint:config -- -f ./config/Coffeebox.yml &&
           npm run lint:config -- -f ./config/mozilla.yml &&
           npm run lint:config -- -f ./config/oss.yml &&
           npm run lint:config -- -f ./config/quiet.yml &&
@@ -75,21 +75,21 @@ jobs:
         node-version: [14, 16, 18, 19]
     steps:
       - name: "Check out Git repository"
-        if: github.repository == 'juice-shop/juice-shop' || github.repository != 'juice-shop/juice-shop' && matrix.os == 'ubuntu-latest' && matrix.node-version == '16'
+        if: github.repository == 'Coffee-shop/Coffee-shop' || github.repository != 'Coffee-shop/Coffee-shop' && matrix.os == 'ubuntu-latest' && matrix.node-version == '16'
         uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f #v2: v2.3.4 available
       - name: "Use Node.js ${{ matrix.node-version }}"
-        if: github.repository == 'juice-shop/juice-shop' || github.repository != 'juice-shop/juice-shop' && matrix.os == 'ubuntu-latest' && matrix.node-version == '16'
+        if: github.repository == 'Coffee-shop/Coffee-shop' || github.repository != 'Coffee-shop/Coffee-shop' && matrix.os == 'ubuntu-latest' && matrix.node-version == '16'
         uses: actions/setup-node@f1f314fca9dfce2769ece7d933488f076716723e #v1: v2.x available
         with:
           node-version: ${{ matrix.node-version }}
       - name: "Install CLI tools"
-        if: github.repository == 'juice-shop/juice-shop' || github.repository != 'juice-shop/juice-shop' && matrix.os == 'ubuntu-latest' && matrix.node-version == '16'
+        if: github.repository == 'Coffee-shop/Coffee-shop' || github.repository != 'Coffee-shop/Coffee-shop' && matrix.os == 'ubuntu-latest' && matrix.node-version == '16'
         run: npm install -g @angular/cli@$ANGULAR_CLI_VERSION
       - name: "Install application"
-        if: github.repository == 'juice-shop/juice-shop' || github.repository != 'juice-shop/juice-shop' && matrix.os == 'ubuntu-latest' && matrix.node-version == '16'
+        if: github.repository == 'Coffee-shop/Coffee-shop' || github.repository != 'Coffee-shop/Coffee-shop' && matrix.os == 'ubuntu-latest' && matrix.node-version == '16'
         run: npm install
       - name: "Execute unit tests"
-        if: github.repository == 'juice-shop/juice-shop' || github.repository != 'juice-shop/juice-shop' && matrix.os == 'ubuntu-latest' && matrix.node-version == '16'
+        if: github.repository == 'Coffee-shop/Coffee-shop' || github.repository != 'Coffee-shop/Coffee-shop' && matrix.os == 'ubuntu-latest' && matrix.node-version == '16'
         uses: nick-invision/retry@45ba062d357edb3b29c4a94b456b188716f61020 #v2: 2.4.1 available
         with:
           timeout_minutes: 15
@@ -100,7 +100,7 @@ jobs:
           cp build/reports/coverage/frontend-tests/lcov.info frontend-lcov.info
           cp build/reports/coverage/server-tests/lcov.info server-lcov.info
       - name: "Upload unit test coverage data"
-        if: github.repository == 'juice-shop/juice-shop' && github.event_name == 'push' && matrix.os == 'ubuntu-latest' && matrix.node-version == '16'
+        if: github.repository == 'Coffee-shop/Coffee-shop' && github.event_name == 'push' && matrix.os == 'ubuntu-latest' && matrix.node-version == '16'
         uses: actions/upload-artifact@6673cd052c4cd6fcf4b4e6e60ea986c889389535 #v3: v3.0.0 available
         with:
           name: unit-test-lcov
@@ -115,21 +115,21 @@ jobs:
         node-version: [14, 16, 18, 19]
     steps:
       - name: "Check out Git repository"
-        if: github.repository == 'juice-shop/juice-shop' || github.repository != 'juice-shop/juice-shop' && matrix.os == 'ubuntu-latest' && matrix.node-version == '16'
+        if: github.repository == 'Coffee-shop/Coffee-shop' || github.repository != 'Coffee-shop/Coffee-shop' && matrix.os == 'ubuntu-latest' && matrix.node-version == '16'
         uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f #v2: v2.3.4 available
       - name: "Use Node.js ${{ matrix.node-version }}"
-        if: github.repository == 'juice-shop/juice-shop' || github.repository != 'juice-shop/juice-shop' && matrix.os == 'ubuntu-latest' && matrix.node-version == '16'
+        if: github.repository == 'Coffee-shop/Coffee-shop' || github.repository != 'Coffee-shop/Coffee-shop' && matrix.os == 'ubuntu-latest' && matrix.node-version == '16'
         uses: actions/setup-node@f1f314fca9dfce2769ece7d933488f076716723e #v1: v2.x available
         with:
           node-version: ${{ matrix.node-version }}
       - name: "Install CLI tools"
-        if: github.repository == 'juice-shop/juice-shop' || github.repository != 'juice-shop/juice-shop' && matrix.os == 'ubuntu-latest' && matrix.node-version == '16'
+        if: github.repository == 'Coffee-shop/Coffee-shop' || github.repository != 'Coffee-shop/Coffee-shop' && matrix.os == 'ubuntu-latest' && matrix.node-version == '16'
         run: npm install -g @angular/cli@$ANGULAR_CLI_VERSION
       - name: "Install application"
-        if: github.repository == 'juice-shop/juice-shop' || github.repository != 'juice-shop/juice-shop' && matrix.os == 'ubuntu-latest' && matrix.node-version == '16'
+        if: github.repository == 'Coffee-shop/Coffee-shop' || github.repository != 'Coffee-shop/Coffee-shop' && matrix.os == 'ubuntu-latest' && matrix.node-version == '16'
         run: npm install
       - name: "Execute integration tests"
-        if: github.repository == 'juice-shop/juice-shop' || github.repository != 'juice-shop/juice-shop' && matrix.os == 'ubuntu-latest' && matrix.node-version == '16'
+        if: github.repository == 'Coffee-shop/Coffee-shop' || github.repository != 'Coffee-shop/Coffee-shop' && matrix.os == 'ubuntu-latest' && matrix.node-version == '16'
         uses: nick-invision/retry@45ba062d357edb3b29c4a94b456b188716f61020 #v2: 2.4.1 available
         with:
           timeout_minutes: 5
@@ -145,7 +145,7 @@ jobs:
       - name: "Copy API test coverage data"
         run: cp build/reports/coverage/api-tests/lcov.info api-lcov.info
       - name: "Upload API test coverage data"
-        if: github.repository == 'juice-shop/juice-shop' && github.event_name == 'push' && matrix.os == 'ubuntu-latest' && matrix.node-version == '16'
+        if: github.repository == 'Coffee-shop/Coffee-shop' && github.event_name == 'push' && matrix.os == 'ubuntu-latest' && matrix.node-version == '16'
         uses: actions/upload-artifact@6673cd052c4cd6fcf4b4e6e60ea986c889389535 #v3: v3.0.0 available
         with:
           name: api-test-lcov
@@ -154,7 +154,7 @@ jobs:
   coverage-report:
     needs: [test, api-test]
     runs-on: ubuntu-latest
-    if: github.repository == 'juice-shop/juice-shop' && github.event_name == 'push'
+    if: github.repository == 'Coffee-shop/Coffee-shop' && github.event_name == 'push'
     steps:
       - name: "Check out Git repository"
         uses: actions/checkout@5a4ac9002d0be2fb38bd78e4b4dbde5606d7042f #v2: v2.3.4 available
@@ -191,7 +191,7 @@ jobs:
       - name: "Install CLI tools"
         run: npm install -g @angular/cli@$ANGULAR_CLI_VERSION
       - name: "Install application"
-        if: github.repository == 'juice-shop/juice-shop' || github.repository != 'juice-shop/juice-shop' && matrix.os == 'ubuntu-latest' && matrix.node-version == '16'
+        if: github.repository == 'Coffee-shop/Coffee-shop' || github.repository != 'Coffee-shop/Coffee-shop' && matrix.os == 'ubuntu-latest' && matrix.node-version == '16'
         run: npm install
       - name: "Execute server tests for each custom configuration"
         uses: nick-invision/retry@45ba062d357edb3b29c4a94b456b188716f61020 #v2: 2.4.1 available
@@ -204,7 +204,7 @@ jobs:
             NODE_ENV=bodgeit npm run test:server &&
             NODE_ENV=ctf npm run test:server &&
             NODE_ENV=fbctf npm run test:server &&
-            NODE_ENV=juicebox npm run test:server &&
+            NODE_ENV=Coffeebox npm run test:server &&
             NODE_ENV=mozilla npm run test:server &&
             NODE_ENV=oss npm run test:server &&
             NODE_ENV=quiet npm run test:server &&
@@ -282,10 +282,10 @@ jobs:
       - name: "Unpack application archive"
         run: |
           cd dist
-          tar -zxf juice-shop-*.tgz
+          tar -zxf Coffee-shop-*.tgz
       - name: "Execute smoke test"
         run: |
-          cd dist/juice-shop_*
+          cd dist/Coffee-shop_*
           npm start &
           cd ../..
           chmod +x test/smoke/smoke-test.sh
@@ -298,7 +298,7 @@ jobs:
       - name: "Execute smoke test on Docker"
         run: docker-compose -f docker-compose.test.yml up --exit-code-from sut
   docker:
-    if: github.repository == 'juice-shop/juice-shop' && github.event_name == 'push' && (github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/master')
+    if: github.repository == 'Coffee-shop/Coffee-shop' && github.event_name == 'push' && (github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/master')
     needs: [test, api-test, e2e, custom-config-test, docker-test]
     runs-on: ubuntu-latest
     steps:
@@ -330,12 +330,12 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: |
-            bkimminich/juice-shop:${{ env.DOCKER_TAG }}
+            bkimminich/Coffee-shop:${{ env.DOCKER_TAG }}
           build-args: |
             VCS_REF=${{ env.VCS_REF }}
             BUILD_DATE=${{ env.BUILD_DATE }}
   heroku:
-    if: github.repository == 'juice-shop/juice-shop' && github.event_name == 'push' && (github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/master')
+    if: github.repository == 'Coffee-shop/Coffee-shop' && github.event_name == 'push' && (github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/master')
     needs: [test, api-test, e2e, custom-config-test]
     runs-on: ubuntu-latest
     steps:
@@ -344,10 +344,10 @@ jobs:
       - name: "Set Heroku app & branch for ${{ github.ref }}"
         run: |
           if [ "$GITHUB_REF" == "refs/heads/master" ]; then
-          echo "HEROKU_APP=juice-shop" >> $GITHUB_ENV
+          echo "HEROKU_APP=Coffee-shop" >> $GITHUB_ENV
           echo "HEROKU_BRANCH=master" >> $GITHUB_ENV
           else
-          echo "HEROKU_APP=juice-shop-staging" >> $GITHUB_ENV
+          echo "HEROKU_APP=Coffee-shop-staging" >> $GITHUB_ENV
           echo "HEROKU_BRANCH=develop" >> $GITHUB_ENV
           fi
       - name: "Deploy ${{ github.ref }} to Heroku"
@@ -358,7 +358,7 @@ jobs:
           heroku_email: bjoern.kimminich@owasp.org
           branch: ${{ env.HEROKU_BRANCH }}
   notify-slack:
-    if: github.repository == 'juice-shop/juice-shop' && github.event_name == 'push' && (success() || failure())
+    if: github.repository == 'Coffee-shop/Coffee-shop' && github.event_name == 'push' && (success() || failure())
     needs:
       - docker
       - heroku
