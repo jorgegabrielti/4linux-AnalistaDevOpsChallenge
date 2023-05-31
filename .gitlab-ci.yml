@@ -4,6 +4,8 @@ stages:
 
 build:
   stage: Build
+  tags:
+    - app
   services:
     - docker:latest
   script:
