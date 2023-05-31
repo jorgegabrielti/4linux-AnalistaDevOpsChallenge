@@ -5,6 +5,8 @@ stages:
 
 build:
   stage: Build
+  services:
+    - docker:latest
   script:
      - "docker build -t ${CI_REGISTRY_USER}/coffee-shop:latest ."
      - "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD}"
