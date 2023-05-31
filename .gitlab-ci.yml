@@ -2,7 +2,6 @@ stages:
   - OWASP Dependency Check
   - Build
 
-
 build:
   stage: Build
   services:
@@ -23,6 +22,3 @@ owasp_dependency_check:
     paths:
       - "./dependency-check-report.html"
       - "./dependency-check-report.json"
-
-
-
