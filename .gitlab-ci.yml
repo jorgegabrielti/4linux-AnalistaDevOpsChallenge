@@ -1,5 +1,5 @@
 stages:
-  - OWASP Dependency Check
+  - SCA
   - Build
 
 build:
@@ -9,13 +9,13 @@ build:
   services:
     - docker:latest
   script:
-     - "docker build -t ${CI_REGISTRY_USER}/coffee-shop:latest ."
      - "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD}"
+     - "docker build -t ${CI_REGISTRY_USER}/coffee-shop:latest ."
      - "docker push ${CI_REGISTRY_USER}/coffee-shop:latest"
 
 owasp_dependency_check:
   image: owasp/dependency-check
-  stage: OWASP Dependency Check
+  stage: SCA
   script: 
     - --scan "./" --format ALL --project "$CI_PROJECT_NAME" --out ./
   allow_failure: true
