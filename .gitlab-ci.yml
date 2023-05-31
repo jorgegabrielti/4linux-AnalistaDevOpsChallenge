@@ -1,7 +1,30 @@
-include:
-  - template: Auto-DevOps.gitlab-ci.yml
+stages:
+  - OWASP Dependency Check
+  - Build
 
-variables:
-  SAST_EXCLUDED_PATHS: "frontend/src/assets/private/**"
-  TEST_DISABLED: "true"
-  DAST_DISABLED: "true"
+
+build:
+  image: docker:latest
+  stage: Build
+  script:
+     - "docker build -t ${CI_REGISTRY_USER}/coffee-shop:latest ."
+     - "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD}"
+     - "docker push ${CI_REGISTRY_USER}/coffee-shop:latest"
+
+owasp_dependency_check:
+  image:
+    name: registry.gitlab.com/gitlab-ci-utils/docker-dependency-check:latest
+  stage: OWASP Dependency Check
+  script:
+    - >
+      /usr/share/dependency-check/bin/dependency-check.sh --scan "./" --format ALL
+      --project "$CI_PROJECT_NAME" --failOnCVSS 0
+  allow_failure: true
+  artifacts:
+    when: always
+    paths:
+      - "./dependency-check-report.html"
+      - "./dependency-check-report.json"
+
+
+
