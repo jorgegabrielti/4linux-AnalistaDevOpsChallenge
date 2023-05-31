@@ -11,10 +11,10 @@ build:
      - "docker push ${CI_REGISTRY_USER}/coffee-shop:latest"
 
 owasp_dependency_check:
+  image: owasp/dependency-check
   stage: OWASP Dependency Check
   script: 
-    - npm install -D owasp-dependency-check
-    - owasp-dependency-check --project "$CI_PROJECT_NAME" --format ALL --failOnCVSS 0 
+    - --scan "./" --format ALL --project "$CI_PROJECT_NAME" --out ./
   allow_failure: true
   artifacts:
     when: always
