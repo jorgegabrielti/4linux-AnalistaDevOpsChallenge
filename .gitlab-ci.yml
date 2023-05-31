@@ -4,7 +4,6 @@ stages:
 
 
 build:
-  image: docker:latest
   stage: Build
   script:
      - "docker build -t ${CI_REGISTRY_USER}/coffee-shop:latest ."
@@ -12,13 +11,10 @@ build:
      - "docker push ${CI_REGISTRY_USER}/coffee-shop:latest"
 
 owasp_dependency_check:
-  image:
-    name: registry.gitlab.com/gitlab-ci-utils/docker-dependency-check:latest
   stage: OWASP Dependency Check
-  script:
-    - >
-      /usr/share/dependency-check/bin/dependency-check.sh --scan "./" --format ALL
-      --project "$CI_PROJECT_NAME" --failOnCVSS 0
+  script: 
+    - npm install -D owasp-dependency-check
+    - owasp-dependency-check --project "$CI_PROJECT_NAME" --format ALL --failOnCVSS 0 
   allow_failure: true
   artifacts:
     when: always
