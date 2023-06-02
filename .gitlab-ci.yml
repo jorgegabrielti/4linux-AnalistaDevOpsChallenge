@@ -33,5 +33,3 @@ lint:
     - npm run build
     - npm run prettier:check
     - npm run lint:check
-  artifacts:
-    - node_modules/**
