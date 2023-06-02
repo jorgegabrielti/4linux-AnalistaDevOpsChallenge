@@ -1,4 +1,5 @@
 stages:
+  - lint
   - SCA
   - Build
 
@@ -24,3 +25,13 @@ owasp_dependency_check:
     paths:
       - "./dependency-check-report.html"
       - "./dependency-check-report.json"
+
+name: lint
+  stage: lint
+  script:
+    - npm install  
+    - npm run build
+    - npm run prettier:check
+    - npm run lint:check
+  artifacts:
+    - node_modules/**
