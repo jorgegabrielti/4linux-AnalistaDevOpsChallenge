@@ -32,6 +32,4 @@ lint:
     - app
   script:
     - npm install  
-    - npm run build
-    - npm run prettier:check
-    - npm run lint:check
+    - npm run lint
