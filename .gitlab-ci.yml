@@ -28,6 +28,8 @@ owasp_dependency_check:
 
 lint:
   stage: lint
+  tags:
+    - app
   script:
     - npm install  
     - npm run build
