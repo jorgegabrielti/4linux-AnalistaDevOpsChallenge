@@ -17,6 +17,8 @@ build:
 owasp_dependency_check:
   image: owasp/dependency-check
   stage: SCA
+  tags:
+    - app
   script: 
     - --scan "./" --format ALL --project "$CI_PROJECT_NAME" --out ./
   allow_failure: true
