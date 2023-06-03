@@ -21,7 +21,7 @@ owasp_dependency_check:
   script:
     - >
       docker run --volume $(pwd):/project --volume $(pwd)/.owasp:/usr/share/dependency-check/data 
-      owasp/dependency-check:6.4.1 --scan '/project' --failOnCVSS 0 --format "ALL" --out "/project/test/reports"
+      owasp/dependency-check:6.4.1 --scan '/project' --failOnCVSS 0 --format "ALL" --out "/project/"
   allow_failure: true
 
 #lint:
