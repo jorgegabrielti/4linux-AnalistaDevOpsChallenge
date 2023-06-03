@@ -1,8 +1,12 @@
 stages:
+  - Validate project
   - SCA
-  
+  - Build and Push Docker Image
+  - Deploy on app machine
+
 build:
   stage: Build and Push Docker Image
+  when: manual
   tags:
     - app
   services:
@@ -27,6 +31,7 @@ owasp_dependency_check:
 
 lint:
   stage: Validate project
+  when: manual
   tags:
     - app
   script:
@@ -35,6 +40,7 @@ lint:
 
 deploy:
   stage: Deploy on app machine
+  when: manual
   tags:
     - app
   script:
