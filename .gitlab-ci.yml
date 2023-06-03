@@ -1,5 +1,7 @@
 stages:
+  - lint
   - SCA
+  - build
 
 build:
   stage: Build
