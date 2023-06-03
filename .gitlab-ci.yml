@@ -20,7 +20,7 @@ owasp_dependency_check:
   tags:
     - app
   dependencies:
-    - Validate project
+    - lint
   script:
     - >
       docker run --rm -e user=$USER -u $(id -u ${USER}):$(id -g ${USER}) --volume $(pwd):/src:z 
