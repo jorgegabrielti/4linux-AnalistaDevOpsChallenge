@@ -24,11 +24,8 @@ owasp_dependency_check:
   script:
     # Job will scan the project root folder and fail if any vulnerabilities with CVSS > 0 are found
     - >
-      ls -lh
-      /usr/share/dependency-check/bin/dependency-check.sh --scan "./" --format ALL
+      /usr/share/dependency-check/bin/dependency-check.sh --scan "./" --format HTML
       --project "$CI_PROJECT_NAME" --failOnCVSS 0
-      --suppression /suppressions/npm_fp_suppression.xml
-      --suppression /suppressions/npm_na_suppressions.xml
 
   allow_failure: true
   artifacts:
