@@ -19,7 +19,7 @@ build:
 dependencycheck:
   stage: SCA    
   tags:
-    app
+    - app
   image:
     name: owasp/dependency-check-action
     entrypoint: [""]
