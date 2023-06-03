@@ -20,7 +20,7 @@ owasp_dependency_check:
   image:
     name: registry.gitlab.com/gitlab-ci-utils/docker-dependency-check:latest
     entrypoint: [""]
-  stage: test
+  stage: SCA
   script:
     # Job will scan the project root folder and fail if any vulnerabilities with CVSS > 0 are found
     - >
