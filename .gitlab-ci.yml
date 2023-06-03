@@ -1,9 +1,6 @@
 stages:
- #- Validate project
   - SCA
- #- Build and Push Docker Image
- #- Deploy on app machine
-
+  
 build:
   stage: Build and Push Docker Image
   tags:
