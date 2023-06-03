@@ -21,6 +21,7 @@ dependencycheck:
   tags:
     - app
   script:
+    - chmod +x ./dependency-check.sh
     - ./dependency-check.sh
 
 
