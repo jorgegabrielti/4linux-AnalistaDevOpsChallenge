@@ -28,10 +28,15 @@ dependencycheck:
 
 sast:
   stage: SAST
-  tags:
-    - app
-  script:
-    - 'horusec start -a ${HORUSEC_API_KEY} -u http://192.168.56.60:8000 -p . -G true --enable-git-history=true'
+  image: docker:latest
+  variables:
+    GIT_DEPTH: 0 # Required when commit authors is enabled
+  services:
+    - docker:dind
+  build-code-job:
+    stage: build
+    script:
+      - docker run -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/src/horusec horuszup/horusec-cli:latest start -a ${HORUSEC_API_KEY} -u http://192.168.56.60:8000 -p /src/horusec -G true --enable-git-history=true
 
 lint:
   stage: Validate project
