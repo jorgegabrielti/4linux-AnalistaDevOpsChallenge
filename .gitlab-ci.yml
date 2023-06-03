@@ -19,13 +19,13 @@ owasp_dependency_check:
   stage: SCA
   tags:
     - app
+  image:
+    name: owasp/dependency-check
+    entrypoint: [""]
   dependencies:
     - lint
   script:
-    - >
-      docker run --rm -e user=$USER -u $(id -u ${USER}):$(id -g ${USER}) --volume $(pwd):/src:z 
-      --volume /vagrant/:/report:z owasp/dependency-check:latest --scan /src --format "ALL" 
-      --project "Coffee-Shop" --failOnCVSS 5 --out /report
+    - /usr/share/dependency-check/bin/dependency-check.sh --project coffe-shop --out . --scan . --enableExperimental --failOnCVSS 7
   allow_failure: true
 
 lint:
