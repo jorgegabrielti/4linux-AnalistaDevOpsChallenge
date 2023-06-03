@@ -16,17 +16,16 @@ build:
      - "docker build -t ${CI_REGISTRY_USER}/coffee-shop:latest ."
      - "docker push ${CI_REGISTRY_USER}/coffee-shop:latest"
 
-dependency_check:
-  stage: SCA
-  image:
-    name: pmosbach/owasp-dependency-check:latest
-    entrypoint: [""]
-  script:
-    - /tmp/dependency-check/bin/dependency-check.sh --scan "./" --format ALL --project "$CI_PROJECT_NAME" --enableExperimental
-  artifacts:
-    paths:
-      - 'dependency-check-report.html'
-      - 'dependency-check-report.json'
+dependencycheck:
+    stage: SCA
+    image:
+        name: owasp/dependency-check-action
+        entrypoint: [""]
+#    before_script:
+#        - mkdir data
+#        - mkdir dependency-check
+    script:
+        - /usr/share/dependency-check/bin/dependency-check.sh --project Test --out . --scan . --enableExperimental --failOnCVSS 7
 
 
 lint:
