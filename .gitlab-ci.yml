@@ -3,6 +3,7 @@ stages:
   - SCA
   - Build and Push Docker Image
   - Deploy on app machine
+  - SAST
 
 build:
   stage: Build and Push Docker Image
@@ -17,6 +18,7 @@ build:
      - "docker push ${CI_REGISTRY_USER}/coffee-shop:latest"
 
 dependencycheck:
+  when: manual
   stage: SCA    
   tags:
     - app
@@ -24,6 +26,12 @@ dependencycheck:
     - chmod +x ./dependency-check.sh
     - ./dependency-check.sh
 
+sast:
+  stage: SAST
+  tags:
+    - app
+  script:
+    - "horusec start -a ${HORUSEC_API_KEY} -u http://192.168.56.60:8000 -p ./ -G true --enable-git-history="true""
 
 lint:
   stage: Validate project
