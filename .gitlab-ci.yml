@@ -20,8 +20,17 @@ owasp_dependency_check:
     - app
   script:
     - >
-      docker run --volume $(pwd):/project --volume $(pwd)/.owasp:/usr/share/dependency-check/data 
-      owasp/dependency-check:6.4.1 --scan '/project' --failOnCVSS 0 --format "ALL" --out "/project/"
+    docker run --rm \
+        -e user=$USER \
+        -u $(id -u ${USER}):$(id -g ${USER}) \
+        --volume $(pwd):/src:z \
+        --volume /vagrant/:/report:z \
+        owasp/dependency-check:latest \
+        --scan /src \
+        --format "ALL" \
+        --project "$DC_PROJECT" \
+        --out /report
+
   allow_failure: true
 
 #lint:
