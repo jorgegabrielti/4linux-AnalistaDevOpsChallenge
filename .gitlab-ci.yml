@@ -21,8 +21,8 @@ owasp_dependency_check:
   script:
     - >
       docker run --rm -e user=$USER -u $(id -u ${USER}):$(id -g ${USER}) --volume $(pwd):/src:z 
-      --volume /vagrant/:/report:z owasp/dependency-check:latest --scan /src --format "ALL" --project "Coffee-Shop" 
-        --out /report
+      --volume /vagrant/:/report:z owasp/dependency-check:latest --scan /src --format "ALL" 
+      --project "Coffee-Shop" --out /report
 
   allow_failure: true
 
