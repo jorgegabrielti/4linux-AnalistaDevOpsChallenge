@@ -22,7 +22,7 @@ dependency_check:
     name: pmosbach/owasp-dependency-check:latest
     entrypoint: [""]
   script:
-    - /tmp/dependency-check/bin/dependency-check.sh --scan "./" --format ALL --project "$CI_PROJECT_NAME --enableExperimental"
+    - /tmp/dependency-check/bin/dependency-check.sh --scan "./" --format ALL --project "$CI_PROJECT_NAME" --enableExperimental
   artifacts:
     paths:
       - 'dependency-check-report.html'
