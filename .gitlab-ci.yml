@@ -31,7 +31,7 @@ sast:
   tags:
     - app
   script:
-    - 'horusec start -a ${HORUSEC_API_KEY} -u http://192.168.56.60:8000 -p ./ -G true --enable-git-history="true"'
+    - 'horusec start -a ${HORUSEC_API_KEY} -u http://192.168.56.60:8000 -p . -G true --enable-git-history=true'
 
 lint:
   stage: Validate project
