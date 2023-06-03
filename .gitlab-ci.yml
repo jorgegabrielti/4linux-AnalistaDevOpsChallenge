@@ -1,35 +1,46 @@
 stages:
-#  - lint
+  - Validate project
   - SCA
-#  - Build
+  - Build and Push Docker Image
+  - Deploy on app machine
 
-#build:
-#  stage: Build
-#  tags:
-#    - app
-#  services:
-#    - docker:latest
-#  script:
-#     - "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD}"
-#     - "docker build -t ${CI_REGISTRY_USER}/coffee-shop:latest ."
-#     - "docker push ${CI_REGISTRY_USER}/coffee-shop:latest"
+build:
+  stage: Build and Push Docker Image
+  tags:
+    - app
+  services:
+    - docker:latest
+  script:
+     - "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD}"
+     - "docker build -t ${CI_REGISTRY_USER}/coffee-shop:latest ."
+     - "docker push ${CI_REGISTRY_USER}/coffee-shop:latest"
 
 owasp_dependency_check:
   stage: SCA
   tags:
     - app
+  dependencies:
+    - Validate project
   script:
     - >
       docker run --rm -e user=$USER -u $(id -u ${USER}):$(id -g ${USER}) --volume $(pwd):/src:z 
       --volume /vagrant/:/report:z owasp/dependency-check:latest --scan /src --format "ALL" 
       --project "Coffee-Shop" --failOnCVSS 5 --out /report
-
   allow_failure: true
 
-#lint:
-#  stage: lint
-#  tags:
-#    - app
-#  script:
-#    - npm install  
-#    - npm run lint
+lint:
+  stage: Validate project
+  tags:
+    - app
+  script:
+    - npm install
+    - npm run lint
+
+deploy:
+  stage: Deploy on app machine
+  tags:
+    - app
+  script:
+     - "docker rm -f coffee-shop-app 2> /dev/null"
+     - "docker pull ${CI_REGISTRY_USER}/coffee-shop:latest"
+     - "docker run -d -p 3000:3000 --name coffee-shop-app ${CI_REGISTRY_USER}/coffee-shop"
