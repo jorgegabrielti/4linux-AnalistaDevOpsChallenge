@@ -31,7 +31,7 @@ sast:
   tags:
     - app
   script:
-    - 'docker run -v /var/run/docker.sock:/var/run/docker.sock -v $(pwd):/src horuszup/horusec-cli:latest horusec start -p /src -P $(pwd) -a ${HORUSEC_API_KEY} -u http://192.168.56.60:8000 -G true --enable-git-history=true'
+    - 'horusec start -a ${HORUSEC_API_KEY} -u http://devsecops.labs.devsecops:8000 -p . -G true --enable-git-history=true'
 
 lint:
   stage: Validate project
