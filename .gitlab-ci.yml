@@ -1,13 +1,26 @@
 stages:
   - Validate project
-  - SCA
+  - SAST & SCA
   - Build and Push Docker Image
   - Deploy on app machine
-  - SAST
+
+lint:
+  stage: Validate project
+  tags:
+    - app
+  script:
+    - npm install eslint eslint-config-standard-with-typescript eslint-plugin-import eslint-plugin-node eslint-plugin-promise typescript@4.4.2 @typescript-eslint/eslint-plugin @typescript-eslint/parser
+    - npm run lint
+
+sast:
+  stage: SAST & SCA
+  tags:
+    - app
+  script:
+    - '/usr/local/bin/horusec start -p . -a ${HORUSEC_API_KEY} -u http://devsecops.labs.devsecops:8000 -G true --enable-git-history=true -w'
 
 build:
   stage: Build and Push Docker Image
-  when: manual
   tags:
     - app
   services:
@@ -17,34 +30,8 @@ build:
      - "docker build -t ${CI_REGISTRY_USER}/coffee-shop:latest ."
      - "docker push ${CI_REGISTRY_USER}/coffee-shop:latest"
 
-dependencycheck:
-  when: manual
-  stage: SCA    
-  tags:
-    - app
-  script:
-    - chmod +x ./dependency-check.sh
-    - ./dependency-check.sh
-
-sast:
-  stage: SAST
-  tags:
-    - app
-  script:
-    - '/usr/local/bin/horusec start -p . -a ${HORUSEC_API_KEY} -u http://devsecops.labs.devsecops:8000 -G true --enable-git-history=true'
-
-lint:
-  stage: Validate project
-  when: manual
-  tags:
-    - app
-  script:
-    - npm install eslint eslint-config-standard-with-typescript eslint-plugin-import eslint-plugin-node eslint-plugin-promise typescript@4.4.2 @typescript-eslint/eslint-plugin @typescript-eslint/parser
-    - npm run lint
-
 deploy:
   stage: Deploy on app machine
-  when: manual
   tags:
     - app
   script:
