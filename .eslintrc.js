@@ -32,7 +32,6 @@ module.exports = {
       files: ['**/*.ts'],
       parser: '@typescript-eslint/parser',
       rules: {
-        'no-void': 'off', // conflicting with recommendation from @typescript-eslint/no-floating-promises
         '@typescript-eslint/no-misused-promises': 'off', 
         '@typescript-eslint/explicit-function-return-type': 'off', 
         '@typescript-eslint/restrict-plus-operands': 'off', 

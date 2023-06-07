@@ -39,7 +39,7 @@ lint:
   tags:
     - app
   script:
-    - npm install
+    - npm install eslint eslint-config-standard-with-typescript eslint-plugin-import eslint-plugin-node eslint-plugin-promise typescript@4.4.2 @typescript-eslint/eslint-plugin @typescript-eslint/parser
     - npm run lint
 
 deploy:
