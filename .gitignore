@@ -30,6 +30,7 @@ vagrant/.vagrant/
 JSON
 JSON.map
 frontend/src/**/*.js
+.env
 
 # IDEs
 .idea/
