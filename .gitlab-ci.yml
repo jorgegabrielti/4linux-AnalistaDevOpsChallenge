@@ -1,5 +1,6 @@
 stages:
   - Validate project
+  - SAST & SCA
   - Build and Push Docker Image
   - Deploy on app machine
 
