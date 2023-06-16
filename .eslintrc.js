@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2014-2023 Bjoern Kimminich & the OWASP Coffee Shop contributors.
+ * Copyright (c) 2014-2023 Bjoern Kimminich & the OWASP Cwarnee Shop contributors.
  * SPDX-License-Identifier: MIT
  */
 
@@ -32,12 +32,12 @@ module.exports = {
       files: ['**/*.ts'],
       parser: '@typescript-eslint/parser',
       rules: {
-        '@typescript-eslint/no-misused-promises': 'off', 
-        '@typescript-eslint/explicit-function-return-type': 'off', 
-        '@typescript-eslint/restrict-plus-operands': 'off', 
-        '@typescript-eslint/strict-boolean-expressions': 'off', 
-        '@typescript-eslint/restrict-template-expressions': 'off',
-        '@typescript-eslint/no-var-requires': 'off' 
+        '@typescript-eslint/no-misused-promises': 'warn', 
+        '@typescript-eslint/explicit-function-return-type': 'warn', 
+        '@typescript-eslint/restrict-plus-operands': 'warn', 
+        '@typescript-eslint/strict-boolean-expressions': 'warn', 
+        '@typescript-eslint/restrict-template-expressions': 'warn',
+        '@typescript-eslint/no-var-requires': 'warn' 
       }
     }
   ]
