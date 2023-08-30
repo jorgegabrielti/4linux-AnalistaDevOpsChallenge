@@ -48,15 +48,17 @@ trivy:
     - app-proxmox-sgoncalves
   script:
     - "/usr/local/bin/trivy image --severity HIGH --format table --output scan.txt ${CI_REGISTRY_USER}/coffee-shop:latest"
+  artifacts:
+    paths:
+      - scan.txt    
 
 dependencycheck:
-    stage: SCA
-    image:
-        name: owasp/dependency-check
-        entrypoint: [""]
-#    before_script:
-#        - mkdir data
-#        - mkdir dependency-check
-    script:
-        - /usr/share/dependency-check/bin/dependency-check.sh --project coffee-shop --out . --scan . --enableExperimental --failOnCVSS 7    
+  stage: SCA
+  tags:
+    - app-proxmox-sgoncalves
+  script:
+      - /usr/bin/dependency-check --project coffee-shop --out . --scan . --enableExperimental --failOnCVSS 7
+  artifacts:
+    paths:
+      - dependency-check-report.html    
 
