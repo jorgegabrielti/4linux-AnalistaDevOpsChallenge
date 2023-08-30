@@ -15,7 +15,7 @@ lint:
     - npm run lint
 
 sast:
-  stage: SAST & SCA
+  stage: SAST
   tags:
     - app-proxmox-sgoncalves
   script:
