@@ -1,40 +1,54 @@
-stages:
-  - Validate project
-  - SAST & SCA
-  - Build and Push Docker Image
-  - Deploy on app machine
+# You can override the included template(s) by including variable overrides
+# SAST customization: https://docs.gitlab.com/ee/user/application_security/sast/#customizing-the-sast-settings
+# Secret Detection customization: https://docs.gitlab.com/ee/user/application_security/secret_detection/#customizing-settings
+# Dependency Scanning customization: https://docs.gitlab.com/ee/user/application_security/dependency_scanning/#customizing-the-dependency-scanning-settings
+# Container Scanning customization: https://docs.gitlab.com/ee/user/application_security/container_scanning/#customizing-the-container-scanning-settings
+# Note that environment variables can be set in several places
+# See https://docs.gitlab.com/ee/ci/variables/#cicd-variable-precedence
 
+# container_scanning:
+#   variables:
+#     DOCKER_IMAGE: ...
+#     DOCKER_USER: ...
+#     DOCKER_PASSWORD: ...
+stages:
+- Validate project
+- SAST & SCA
+- Build and Push Docker Image
+- Deploy on app machine
 lint:
   stage: Validate project
   tags:
-    - app-sgoncalves
+  - app-sgoncalves
   script:
-    - npm install eslint eslint-config-standard-with-typescript eslint-plugin-import eslint-plugin-node eslint-plugin-promise typescript@4.4.2 @typescript-eslint/eslint-plugin @typescript-eslint/parser
-    - npm run lint
-
+  - npm install eslint eslint-config-standard-with-typescript eslint-plugin-import
+    eslint-plugin-node eslint-plugin-promise typescript@4.4.2 @typescript-eslint/eslint-plugin
+    @typescript-eslint/parser
+  - npm run lint
 sast:
   stage: SAST & SCA
   tags:
-    - app-sgoncalves
+  - app-sgoncalves
   script:
-    - '/usr/local/bin/horusec start -p . -a ${HORUSEC_API_KEY} -u http://devsecops.labs.devsecops:8000 -G true --enable-git-history=true -w'
-
+  - "/usr/local/bin/horusec start -p . -a ${HORUSEC_API_KEY} -u http://devsecops.labs.devsecops:8000
+    -G true --enable-git-history=true -w"
 build:
   stage: Build and Push Docker Image
   tags:
-    - app-sgoncalves
+  - app-sgoncalves
   services:
-    - docker:latest
+  - docker:latest
   script:
-     - "docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD}"
-     - "docker build -t ${CI_REGISTRY_USER}/coffee-shop:latest ."
-     - "docker push ${CI_REGISTRY_USER}/coffee-shop:latest"
-
+  - docker login -u ${CI_REGISTRY_USER} -p ${CI_REGISTRY_PASSWORD}
+  - docker build -t ${CI_REGISTRY_USER}/coffee-shop:latest .
+  - docker push ${CI_REGISTRY_USER}/coffee-shop:latest
 deploy:
   stage: Deploy on app machine
   tags:
-    - app-sgoncalves
+  - app-sgoncalves
   script:
-     - "docker rm -f coffee-shop-app 2> /dev/null"
-     - "docker pull ${CI_REGISTRY_USER}/coffee-shop:latest"
-     - "docker run -d -p 3000:3000 --name coffee-shop-app ${CI_REGISTRY_USER}/coffee-shop"
+  - docker rm -f coffee-shop-app 2> /dev/null
+  - docker pull ${CI_REGISTRY_USER}/coffee-shop:latest
+  - docker run -d -p 3000:3000 --name coffee-shop-app ${CI_REGISTRY_USER}/coffee-shop
+include:
+- template: Jobs/Container-Scanning.gitlab-ci.yml
