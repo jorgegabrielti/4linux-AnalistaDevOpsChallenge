@@ -45,6 +45,5 @@ trivy:
   tags:
     - app-proxmox-sgoncalves
   script:
-    - "/usr/local/bin/trivy --exit-code 0 --severity HIGH --no-progress --auto-refresh trivy-ci-test"
-    - "/usr/local/bin/trivy — exit-code 1 — severity CRITICAL — no-progress — auto-refresh trivy-ci-test"
+    - "/usr/local/bin/trivy image --severity HIGH --format table --output scan.txt ${CI_REGISTRY_USER}/coffee-shop:latest"
 
