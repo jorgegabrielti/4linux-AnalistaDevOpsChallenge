@@ -42,17 +42,9 @@ deploy:
 
 trivy:
   stage: Container Scan
-  image: docker:stable-git
-  before_script:
-    - docker build -t trivy-ci-test . 
-    - wget https://github.com/aquasecurity/trivy/releases/download/v0.1.6/trivy_0.1.6_Linux-64bit.tar.gz
-    - tar zxvf trivy_0.1.6_Linux-64bit.tar.gz
-  variables:
-    DOCKER_DRIVER: overlay2
-  allow_failure: true
-  services:
-    - docker:stable-dind
+  tags:
+    - app-proxmox-sgoncalves
   script:
-    - ./trivy --exit-code 0 --severity HIGH --no-progress --auto-refresh trivy-ci-test
-    - ./trivy — exit-code 1 — severity CRITICAL — no-progress — auto-refresh trivy-ci-test
+    - "/usr/local/bin/trivy --exit-code 0 --severity HIGH --no-progress --auto-refresh trivy-ci-test"
+    - "/usr/local/bin/trivy — exit-code 1 — severity CRITICAL — no-progress — auto-refresh trivy-ci-test"
 
