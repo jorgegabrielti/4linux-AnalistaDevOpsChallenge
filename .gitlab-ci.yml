@@ -1,6 +1,7 @@
 stages:
   - Validate project
-  - SAST & SCA
+  - SAST
+  - SCA
   - Build and Push Docker Image
   - Container Scan
   - Deploy on app machine
@@ -46,4 +47,15 @@ trivy:
     - app-proxmox-sgoncalves
   script:
     - "/usr/local/bin/trivy image --severity HIGH --format table --output scan.txt ${CI_REGISTRY_USER}/coffee-shop:latest"
+
+dependencycheck:
+    stage: SCA
+    image:
+        name: owasp/dependency-check
+        entrypoint: [""]
+#    before_script:
+#        - mkdir data
+#        - mkdir dependency-check
+    script:
+        - /usr/share/dependency-check/bin/dependency-check.sh --project coffee-shop --out . --scan . --enableExperimental --failOnCVSS 7    
 
