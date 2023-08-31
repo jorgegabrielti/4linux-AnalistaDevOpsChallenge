@@ -1,7 +1,6 @@
 stages:
   - Validate project
-  - SAST
-  - SCA
+  - SAST & SCA
   - Build and Push Docker Image
   - Container Scan
   - Deploy on app machine
@@ -51,14 +50,3 @@ trivy:
   artifacts:
     paths:
       - scan.txt    
-
-dependencycheck:
-  stage: SCA
-  tags:
-    - app-proxmox-sgoncalves
-  script:
-      - /usr/bin/dependency-check --project coffee-shop --out . --scan . --enableExperimental --failOnCVSS 7
-  artifacts:
-    paths:
-      - dependency-check-report.html    
-
