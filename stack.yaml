@@ -1,5 +1,5 @@
 ---
-version: 3.0
+version: "3.0"
 services:
   coffee-shop:
     image: jorgegabriel/4linux-analistadevopschallenge:latest
