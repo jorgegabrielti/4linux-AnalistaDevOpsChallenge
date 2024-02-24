@@ -226,19 +226,25 @@ Saída para os workers
 ### Etapa 2: Pipeline de Deploy
 Implemente uma pipeline no GitlabCI ou Github Actions para o deploy da aplicação Coffee Shop no cluster configurado na etapa anterior. Código-fonte disponível em: https://gitlab.com/o_sgoncalves/coffee-shop.
 
-Para a pipeline foi criado o arquivo main.yaml abaixo, que consiste nos seguintes passos:
+Para a pipeline foi criado o arquivo .git/workflows/coffee-shop_deploy.yaml abaixo, que consiste nos seguintes passos:
 
 - Login do Docker Hub
 - Build e Push da imagem da aplicação coffee-shop para o Docker Hub
 - Confiugarações ssh para conexão com o Manager do Cluster Swarm
 - Deploy da aplicação no Cluster Swarm via ssh
 
+>[!IMPORTANT]
+> 
+> ESTE WORKFLOW ESTÁ HABILITADO PARA DISPARAR DE FORMA MANUAL APENAS. CABEM MUITAS MELHHORIAS RELACIONADAS AO FLUXO DE CI/CD MAIS ADEQUADO PARA O CENÁRIO.
+
 ```yaml
-name: CI/CD DOCKER SWARM
+name: Coffee Shop Deploy
+
 on:
-  push:
-    branches:
-      - jorge
+  #push:
+  #  branches:
+  #    - jorge
+  workflow_dispatch:
 
 jobs:
   build:
@@ -261,7 +267,11 @@ jobs:
           context: .
           push: true
           tags: ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:latest
-      
+  
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
         with:
@@ -270,7 +280,6 @@ jobs:
 
       - name: Adding Known Hosts
         run: ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
-
       - name: Deploy stack to cluster swarm
         run: ssh ${{ secrets.SSH_USER }}@${{ secrets.HOST }} 'docker service inspect coffee-shop >/dev/null 2>&1 && docker service update --replicas 9 coffee-shop || docker service create -p 3000:3000 --replicas=9 --name coffee-shop jorgegabriel/coffee-shop:latest'
 ```
@@ -280,9 +289,14 @@ Configure um sistema de monitoramento (sugerimos prometheus + grafana) para o cl
 Coffee Shop
 .
 
-Instalação e configuração do Portainer para melhor gerenciamento do Cluster:
+>[!NOTA]
+>
+> MELHORIA NO GERENCIAMENTO DO CLUSTER
+
+Instalação e configuração do Portainer facilitar o gerenciamento do Cluster:
 
 ```yaml
+---
 version: '3.8'
 
 services:
@@ -312,6 +326,7 @@ services:
 
 networks:
   agent_network:
+...
 ```
 Referência: https://prometheus.io/docs/guides/dockerswarm/
 
