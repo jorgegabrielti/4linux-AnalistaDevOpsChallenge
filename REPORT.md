@@ -289,7 +289,7 @@ Configure um sistema de monitoramento (sugerimos prometheus + grafana) para o cl
 Coffee Shop
 .
 
->[!NOTA]
+>[!MELHORIA]
 >
 > MELHORIA NO GERENCIAMENTO DO CLUSTER
 
