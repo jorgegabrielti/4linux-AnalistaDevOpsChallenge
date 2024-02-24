@@ -233,17 +233,17 @@ Para a pipeline foi criado o arquivo .git/workflows/coffee-shop_deploy.yaml abai
 - Confiugarações ssh para conexão com o Manager do Cluster Swarm
 - Deploy da aplicação no Cluster Swarm via ssh
 
->**[!NOTE]**
+>[!NOTE]
 > 
 > ESTE WORKFLOW ESTÁ HABILITADO PARA DISPARAR DE FORMA MANUAL APENAS. CABEM MUITAS MELHHORIAS RELACIONADAS AO FLUXO DE CI/CD MAIS ADEQUADO PARA O CENÁRIO.
 
 
 
 
->**[!IMPORTANT]**
+>[!IMPORTANT]
 >
 > PARA CONEXÃO SSH COM A MÁQUINA VIRTUAL DO NODE MANAGER FOI NECESSÁRIO A CRIAÇÃO DE UM PAR DE CHAVES SSH `ssh-keygen -t rsa -b 4096 -C "jorgegabriel.ti@gmail.com"`. ESTE PAR DE CHAVES FOI INSERIDO COMO SECRET NAS CONFIGURAÇÕES DO REPOSITÓRIO EM **Settings - Secrets and variables - Actions - New repository secret**
-![img](/4Linux-AnalistaDevOps/4linux-analistadevopschallenge/img/github-actions-secrets-and-variables.png)
+![img](./img/github-actions-secrets-and-variables.png)
 
 
 Este workflow utiliza das seguintes variáveis de ambiente para a execução dos jobs:
