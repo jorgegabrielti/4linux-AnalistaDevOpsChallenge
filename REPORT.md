@@ -233,9 +233,41 @@ Para a pipeline foi criado o arquivo .git/workflows/coffee-shop_deploy.yaml abai
 - Confiugarações ssh para conexão com o Manager do Cluster Swarm
 - Deploy da aplicação no Cluster Swarm via ssh
 
->[!IMPORTANT]
+>**[!NOTE]**
 > 
 > ESTE WORKFLOW ESTÁ HABILITADO PARA DISPARAR DE FORMA MANUAL APENAS. CABEM MUITAS MELHHORIAS RELACIONADAS AO FLUXO DE CI/CD MAIS ADEQUADO PARA O CENÁRIO.
+
+
+
+
+>**[!IMPORTANT]**
+>
+> PARA CONEXÃO SSH COM A MÁQUINA VIRTUAL DO NODE MANAGER FOI NECESSÁRIO A CRIAÇÃO DE UM PAR DE CHAVES SSH `ssh-keygen -t rsa -b 4096 -C "jorgegabriel.ti@gmail.com"`. ESTE PAR DE CHAVES FOI INSERIDO COMO SECRET NAS CONFIGURAÇÕES DO REPOSITÓRIO EM **Settings - Secrets and variables - Actions - New repository secret**
+![img](/4Linux-AnalistaDevOps/4linux-analistadevopschallenge/img/github-actions-secrets-and-variables.png)
+
+
+Este workflow utiliza das seguintes variáveis de ambiente para a execução dos jobs:
+
+- **DOCKERHUB_TOKEN**: Token de autenticação PAT do Docker Hub para push da imagem durante o step de build. 
+>[!NOTE]
+>
+> Para gerar um token de autenticação no Docker Hub:
+> - Faça login no Docker Hub.
+> - Selecione seu avatar no canto superior direito e no menu suspenso selecione >Minha conta.
+> - Selecione a guia Segurança e depois Novo Token de Acesso.
+> - Adicione uma descrição para o seu token. Use algo que indique o caso de uso ou finalidade do token.
+>
+> - Defina as permissões de acesso. As permissões de acesso são escopos que definem restrições em seus repositórios. Por exemplo, para permissões de leitura e gravação, um pipeline de automação pode criar uma imagem e enviá-la para um repositório. No entanto, não é possível excluir o repositório.
+>
+> - Selecione Gerar e copie o token que aparece na tela e salve-o. Você não poderá recuperar o token depois de fechar este prompt.
+
+- **DOCKER_SSH_PRIVATE_KEY**: chave ssh privada gerada no manager. Utilizada pelo github durante a execução do workflow para autenticação na máquina virtual.
+- **DOCKER_SSH_PUBLIC_KEY**: chave ssh publica gerada no manager. Utilizada pelo github durante a execução do workflow para autenticação na máquina virtual.
+- **DOCKER_USERNAME**: usuario de autenticação no Docker Hub. Utilizando em conjunto com o PAT(Personal Access Token).
+- **HOST**: Endereço IP do manager.
+- **SSH_USER**: usuário de autenticação via ssh no manager.
+
+
 
 ```yaml
 name: Coffee Shop Deploy
@@ -289,7 +321,8 @@ Configure um sistema de monitoramento (sugerimos prometheus + grafana) para o cl
 Coffee Shop
 .
 
->[!INFO]
+#### Instalação do Portainer
+>**[!INFO]**
 >
 > MELHORIA NO GERENCIAMENTO DO CLUSTER
 
@@ -328,6 +361,7 @@ networks:
   agent_network:
 ...
 ```
+
 Referência: https://prometheus.io/docs/guides/dockerswarm/
 
 Habilitar o monitoramento do docker em /etc/docker/daemon.json em todos os hosts do cluster:
