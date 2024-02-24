@@ -376,9 +376,6 @@ O Portainer esta disponível em http://\<IP ADDRESS\>:9000
 ![portainer](./img/portainer.png)
 
 #### Instalação da Stack de Monitoramento
-
-Referência: https://prometheus.io/docs/guides/dockerswarm/
-
 Habilitar a exposão de métricas do docker no arquivo **/etc/docker/daemon.json** em todos os hosts do cluster:
 ```json
 {
@@ -392,13 +389,8 @@ systemctl restart docker
 ```
 
 
-
-----
-
-
-```
-sudo vim /etc/prometheus/prometheus.yml
-```
+#### Instalação e configuração do Prometheus
+O arquivo de configuração do Prometheus foi criado em **/etc/prometheus/prometheus.yaml**. Este arquivo será montado posteriomente pelo container do Prometheus. Seu conteúdo é o seguinte:
 
 ```yaml
 global:
@@ -423,8 +415,6 @@ scrape_configs:
     dockerswarm_sd_configs:
       - host: unix:///var/run/docker.sock
         role: nodes
-    #static_configs:
-    #  - targets: ["host.docker.internal:9323"]
     relabel_configs:
       # Fetch metrics on port 9323.
       - source_labels: [__meta_dockerswarm_node_address]
@@ -454,58 +444,141 @@ scrape_configs:
 
   - job_name: coffee-shop
     scrape_interval: 60s
-    scrape_timeout: 60s
+    scrape_timeout: 90s
     static_configs:
       - targets: ["host.docker.internal:3000"]
+
+  - job_name: cadvisor
+    scrape_interval: 90s
+    scrape_timeout: 80s
+    static_configs:
+      - targets: ["host.docker.internal:8080"]
 ```
 
-Criação da stack para o prometheus:
+Ele contém as seguintes configurações:
+
+- **job_name: prometheus**: auto-monitoramento do Prometheus.
+- **job_name: docker**: monitoramento do docker daemon.
+- **job_name: swarm**: monitoramento dos recursos do Docker Swarm.
+- **job_name: containers**: monitoramento dos containers.
+- **job_name: coffee-shop**: monitoramento da aplicação coffee-shop.
+- **job_name: cadvisor**: monitoramento do containr do cadvisor.
+
+Criação da stack de monitoramento:
 ```yaml
-version: '3.8'
+version: '3.7'
+
+volumes:
+    prometheus_data: {}
+    grafana_data: {}
+
+networks:
+  monitor-net:
 
 services:
 
   prometheus:
-    image: prom/prometheus
+    image: prom/prometheus:v2.36.2
+    volumes:
+      - /etc/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+      - '--web.enable-lifecycle'
+      - '--web.enable-admin-api'
     ports:
       - 9090:9090
+    depends_on:
+      - cadvisor
     networks:
-      - private
-    command:
-      - --config.file=/etc/prometheus/prometheus.yml
-      - --storage.tsdb.retention.size=5GB
-      - --storage.tsdb.retention.time=15d
-    volumes:
-      - /etc/hosts:/etc/hosts
-      - /etc/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-      - data:/prometheus
+      - monitor-net
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     deploy:
       placement:
         constraints:
-          - node.labels.prometheus.data == true
-networks:
-  private:
+          - node.role==manager
+      restart_policy:
+        condition: on-failure
 
-volumes:
-  data:
+  node-exporter:
+    image: quay.io/prometheus/node-exporter:latest
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - --collector.filesystem.ignored-mount-points
+      - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
+    ports:
+      - 9100:9100
+    networks:
+      - monitor-net
+    deploy:
+      mode: global
+      restart_policy:
+          condition: on-failure
+
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    ports:
+      - 8080:8080
+    networks:
+      - monitor-net
+    deploy:
+      mode: global
+      restart_policy:
+          condition: on-failure
+
+  grafana:
+    image: grafana/grafana
+    depends_on:
+      - prometheus
+    ports:
+      - 3001:3000
+    volumes:
+      - grafana_data:/var/lib/grafana
+    networks:
+      - monitor-net
+    user: "472"
+    deploy:
+      placement:
+        constraints:
+          - node.role==manager
+      restart_policy:
+        condition: on-failure
 ```
 
 ### Aplicação da stack no Cluster
-Esssa abordagem está apresentando problemas de conexão. Ao subir com stack deploy, o Prometheus não consegue chegar no host.docker.internal.
+A stack dem monitoramento foi aplicada com o seguinte comando:
 ```bash
-docker stack deploy -c prometheus-stack.yaml prometheus-stack
+docker stack deploy -c monitoring-stack.yaml monitoring
 ```
 
 Essa abordagem está funcionando:
 ```bash
 docker run -d --name prometheus \
-    --mount type=bind,source=/etc/prometheus/prometheus.yml,destination=/etc/prometheus/prometheus.yml \
+    --mount type=bind,source=/etc/prometheus/prometheus.yaml,destination=/etc/prometheus/prometheus.yml \
      --mount type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock,ro \
     -p 9090:9090 \
     --add-host host.docker.internal=host-gateway \
     prom/prometheus
 ```
-
+grafana:3000
+cadvisor:8080
+node-exporter:9191
+prometheus:9090
 ### Monitoramento dos containers
 ```bash
 docker service create --name cadvisor -l prometheus-job=cadvisor \
