@@ -322,7 +322,7 @@ Coffee Shop
 .
 
 #### Instalação do Portainer
->**[!INFO]**
+>[!INFO]
 >
 > MELHORIA NO GERENCIAMENTO DO CLUSTER
 
@@ -362,22 +362,33 @@ networks:
 ...
 ```
 
+Criação do diretório utilizado pelo Portainer pra storage:
+```bash
+sudo mkdir -p /mnt/storage-pool/portainer
+```
+
+Aplicação da stack no cluster:
+```bash
+docker stack deploy -c portainer-stack.yaml portainer-stack
+```
+
+O Portainer esta disponível em http://\<IP ADDRESS\>:9000
+![portainer](./img/portainer.png)
+
+#### Instalação da Stack de Monitoramento
+
 Referência: https://prometheus.io/docs/guides/dockerswarm/
 
-Habilitar o monitoramento do docker em /etc/docker/daemon.json em todos os hosts do cluster:
-```
+Habilitar a exposão de métricas do docker no arquivo **/etc/docker/daemon.json** em todos os hosts do cluster:
+```json
 {
   "metrics-addr" : "127.0.0.1:9323",
   "experimental" : true
 }
 ```
-
-```
-sudo mkdir -p /mnt/storage-pool/portainer
-```
-
-```
-docker stack deploy -c portainer-stack.yaml portainer-stack
+É necessário reiniciar o docker para aplicar as configurações:
+```bash
+systemctl restart docker
 ```
 
 
