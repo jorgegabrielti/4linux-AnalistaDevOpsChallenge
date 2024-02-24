@@ -1,4 +1,4 @@
-name: ci
+name: CI/CD DOCKER SWARM
 on:
   push:
     branches:
@@ -19,12 +19,12 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
       
-      #- name: Build and push
-      #  uses: docker/build-push-action@v5
-      #  with:
-      #    context: .
-      #    push: true
-      #    tags: ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:latest
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:latest
       
       - name: Install SSH Key
         uses: shimataro/ssh-key-action@v2
@@ -34,16 +34,7 @@ jobs:
 
       - name: Adding Known Hosts
         run: ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
-        #run: sudo ssh-keyscan -H ${{ secrets.HOST }} >> /root/.ssh/known_hosts
 
       - name: Deploy stack to cluster swarm
         run: ssh ${{ secrets.SSH_USER }}@${{ secrets.HOST }} 'docker service create -p 3000:3000 --replicas=12  --name coffee-shop jorgegabriel/coffee-shop:latest'
-      
-      #- name: Deploy to swarm
-      #  uses: sagebind/docker-swarm-deploy-action@v2
-      #  with:
-      #    remote_host: ssh://${{ secrets.SSH_USER }}@${{ secrets.HOST }}
-      #    ssh_private_key: ${{ secrets.DOCKER_SSH_PRIVATE_KEY }}
-      #    ssh_public_key: ${{ secrets.DOCKER_SSH_PUBLIC_KEY }}
-      #    args: stack deploy --compose-file stack.yaml coffee-shop
         
