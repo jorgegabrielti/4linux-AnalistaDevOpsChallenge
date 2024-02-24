@@ -34,7 +34,7 @@ jobs:
 
       - name: Adding Known Hosts
         #run: ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
-        run: ssh-keyscan -H ${{ secrets.HOST }} >> /root/.ssh/known_hosts
+        run: sudo ssh-keyscan -H ${{ secrets.HOST }} >> /root/.ssh/known_hosts
       
       - name: Deploy to swarm
         uses: sagebind/docker-swarm-deploy-action@v2
