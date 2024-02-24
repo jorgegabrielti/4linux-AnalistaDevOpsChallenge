@@ -1,4 +1,4 @@
-name: CI/CD DOCKER SWARM
+name: Coffee Shop Deploy
 
 on:
   #push:

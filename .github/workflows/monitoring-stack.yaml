@@ -1,4 +1,4 @@
-name: CI/CD DOCKER SWARM
+name: Monitoring Stack Deploy
 
 on:
   #push:
