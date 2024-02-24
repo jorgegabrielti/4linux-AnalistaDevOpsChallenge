@@ -566,6 +566,7 @@ A stack dem monitoramento foi aplicada com o seguinte comando:
 docker stack deploy -c monitoring-stack.yaml monitoring
 ```
 
+<!---
 Essa abordagem está funcionando:
 ```bash
 docker run -d --name prometheus \
@@ -608,3 +609,4 @@ docker run -d -p 3001:3000 --name=grafana \
   --volume grafana-storage:/var/lib/grafana \
   --add-host host.docker.internal=host-gateway \
   grafana/grafana-enterprise
+-->
