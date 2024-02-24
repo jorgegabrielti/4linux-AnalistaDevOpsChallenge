@@ -1,0 +1,477 @@
+# Escopo do Desafio
+## Etapa 1: Automação com IaC (Infrastructure As Code)
+Demonstre sua expertise em ferramentas de automação, preferencialmentecom Ansible (ou qualquer outra ferramenta de IaC que preferir). Sua tarefa é:
+
+#### 1. Instalar e configurar um cluster Kubernetes com k3s OU um cluster Docker Swarm em 3 máquinas:
+  - Máquina master-1: Nó master.
+  - Máquina worker-2: Nó worker.
+  - Máquina worker-3: Nó worker.
+
+## Procedimentos de implementação do que foi pedido:
+#### 1. Acessei as vms disponíveis através de uma conexão ssh com usuário e chave pública fornecida para checar qual era o Sistema Operacional:
+```
+ssh -i <PUBLIC KEY> <USUARIO>@<IP> 'cat /etc/os-release'
+```
+Output:
+```text
+PRETTY_NAME="Debian GNU/Linux 12 (bookworm)"
+NAME="Debian GNU/Linux"
+VERSION_ID="12"
+VERSION="12 (bookworm)"
+VERSION_CODENAME=bookworm
+ID=debian
+HOME_URL="https://www.debian.org/"
+SUPPORT_URL="https://www.debian.org/support"
+BUG_REPORT_URL="https://bugs.debian.org/"
+```
+
+#### 2. Instalei o Ansible 2.10.8 em meu ambiente local WSL 2 Ubuntu 22.04 através do comando:
+```bash
+apt install -y ansible
+```
+Obtive a versão mais recente disponível no repositório:
+
+```bash
+ansible --version
+```
+
+```text
+ansible 2.10.8
+  config file = None
+  configured module search path = ['/root/.ansible/plugins/modules', '/usr/share/ansible/plugins/modules']
+  ansible python module location = /usr/lib/python3/dist-packages/ansible
+  executable location = /usr/bin/ansible
+  python version = 3.10.12 (main, Nov 20 2023, 15:14:05) [GCC 11.4.0]
+```
+
+#### 3. Configurei o ambiente Ansible com a seguinte estrutura de diretórios:
+```text
+ansible
+    ├── group_vars
+    │   └── all
+    ├── hosts
+    ├── main.yaml
+    ├── roles
+    │   ├── docker
+    │   │   └── tasks
+    │   │       └── main.yaml
+    │   ├── manager
+    │   │   └── tasks
+    │   │       └── main.yaml
+    │   └── worker
+    │       └── tasks
+    │           └── main.yaml
+    └── ssh.key
+```
+##### 3.1 Entendendo a configuração do Ansible:
+>[!IMPORTANT]
+>
+>Os parâmetros **\<IP ADDRESS\>** e **\<PATH\>/\<PUBLIC KEY\>** foram substituídos pelos dados fornecidos.
+
+
+**Arquivo hosts**
+Inventário de hosts que o playbook Ansible irá aplicar as configurações:
+```text
+[docker_swarm_manager]
+manager1 ansible_host=<IP ADDRESS>
+
+[docker_swarm_worker]
+worker1 ansible_host=<IP ADDRESS>
+worker2 ansible_host=<IP ADDRESS>
+
+[all:vars]
+ansible_ssh_user=<USER>
+ansible_become=true
+ansible_ssh_private_key_file=<PATH>/<PUBLIC KEY>
+ansible_python_interpreter=/usr/bin/python3
+```
+
+**Arquivo main.yaml**
+O playbook do projeto. O arquivo principal contendo os passos que deverão ser aplicados nos hosts:
+```yaml
+---
+ - name: Docker Swarm Manager Configuration
+   hosts: docker_swarm_manager
+
+   roles:
+     - docker
+     - manager
+
+ - name: Docker Swarm Workes Configuration
+   hosts: docker_swarm_worker
+   roles:
+    - docker
+    - worker
+...
+```
+
+Este arquivo está estruturado em passos macros que aplicam as configurações definidas em cada grupo de hosts presentes no inventário:
+
+- **Docker Swarm Manager Configuration**: passo macro aplicado nos hosts do grupo **docker_swarm_manager**. Ele aplica as roles (papéis que contém tarefas que de fato aplicam a configuração definida nelas) de instalação e configuração do Docker e ativação do modo Swarm e geração de um token para ingressar workers no Cluster. Além disso, adiciona o usuário ao grupo docker.
+
+- **Docker Swarm Workes Configuration**: passo macro aplicado nos hosts do grupo **docker_swarm_worker**. Ele aplica as roles de instalação e configuração do Docker e obtenção do token gerado pelo manager e ingresso dos workers no Cluster. Além disso, adiciona o usuário ao grupo docker.
+
+#### 4. Executei o playbook Ansible para provisionamento do Cluster Docker Swarm:
+```
+ansible-playbook -i hosts main.yaml
+```
+
+#### 5. Validação da instalação
+Após execução com sucesso do playbook Ansible, validei os passos descritos nele para os três hosts.
+
+- Verificando a saída do comando `docker info` **nos três hosts**: 
+```bash
+ssh -i challenge.pem <USER>@<IP ADDRESS> 'docker info'
+```
+```bash
+Client: Docker Engine - Community
+ Version:    25.0.3
+ Context:    default
+ Debug Mode: false
+ Plugins:
+  buildx: Docker Buildx (Docker Inc.)
+    Version:  v0.12.1
+    Path:     /usr/libexec/docker/cli-plugins/docker-buildx
+  compose: Docker Compose (Docker Inc.)
+    Version:  v2.24.5
+    Path:     /usr/libexec/docker/cli-plugins/docker-compose
+
+Server:
+ Containers: 10
+  Running: 9
+  Paused: 0
+  Stopped: 1
+ Images: 9
+ Server Version: 25.0.3
+ Storage Driver: overlay2
+  Backing Filesystem: extfs
+  Supports d_type: true
+  Using metacopy: false
+  Native Overlay Diff: true
+  userxattr: false
+ Logging Driver: json-file
+ Cgroup Driver: systemd
+ Cgroup Version: 2
+ Plugins:
+  Volume: local
+  Network: bridge host ipvlan macvlan null overlay
+  Log: awslogs fluentd gcplogs gelf journald json-file local splunk syslog
+ Swarm: active
+  NodeID: riw578c386qjsaua6621pqb6b
+  Is Manager: true
+  ClusterID: sc1j5kzsz1wgbe9lilmo2dh0x
+  Managers: 1
+  Nodes: 3
+  Default Address Pool: 10.0.0.0/8
+  SubnetSize: 24
+  Data Path Port: 4789
+  Orchestration:
+   Task History Retention Limit: 5
+  Raft:
+   Snapshot Interval: 10000
+   Number of Old Snapshots to Retain: 0
+   Heartbeat Tick: 1
+   Election Tick: 10
+  Dispatcher:
+   Heartbeat Period: 5 seconds
+  CA Configuration:
+   Expiry Duration: 3 months
+   Force Rotate: 0
+  Autolock Managers: false
+  Root Rotation In Progress: false
+  Node Address: <IP ADDRESS>
+  Manager Addresses:
+   <IP ADDRESS>:2377
+ Runtimes: io.containerd.runc.v2 runc
+ Default Runtime: runc
+ Init Binary: docker-init
+ containerd version: ae07eda36dd25f8a1b98dfbf587313b99c0190bb
+ runc version: v1.1.12-0-g51d5e94
+ init version: de40ad0
+ Security Options:
+  apparmor
+  seccomp
+   Profile: builtin
+  cgroupns
+ Kernel Version: 6.1.0-18-cloud-amd64
+ Operating System: Debian GNU/Linux 12 (bookworm)
+ OSType: linux
+ Architecture: x86_64
+ CPUs: 1
+ Total Memory: 1.637GiB
+ Name: <FQDN>
+ ID: 6d8f4f12-fe54-4e11-b82f-fb6272859141
+ Docker Root Dir: /var/lib/docker
+ Debug Mode: false
+ Experimental: true
+ Insecure Registries:
+  127.0.0.0/8
+ Live Restore Enabled: false
+```
+Uma alternativa para retornar a saída mais reduzida e apenas com a informação sobre o modo Swarm:
+```bash
+ssh -i <PUBLIC KEY> <USER>@<IP ADDRESS> 'docker info | grep -wE "Swarm|Is Manager"'
+```
+Saída para o manager:
+```text
+ Swarm: active
+  Is Manager: true
+```
+Saída para os workers
+```text
+ Swarm: active
+  Is Manager: false
+```
+
+### Etapa 2: Pipeline de Deploy
+Implemente uma pipeline no GitlabCI ou Github Actions para o deploy da aplicação Coffee Shop no cluster configurado na etapa anterior. Código-fonte disponível em: https://gitlab.com/o_sgoncalves/coffee-shop.
+
+Para a pipeline foi criado o arquivo main.yaml abaixo, que consiste nos seguintes passos:
+
+- Login do Docker Hub
+- Build e Push da imagem da aplicação coffee-shop para o Docker Hub
+- Confiugarações ssh para conexão com o Manager do Cluster Swarm
+- Deploy da aplicação no Cluster Swarm via ssh
+
+```yaml
+name: CI/CD DOCKER SWARM
+on:
+  push:
+    branches:
+      - jorge
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:latest
+      
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.DOCKER_SSH_PRIVATE_KEY }}    
+          known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
+
+      - name: Adding Known Hosts
+        run: ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy stack to cluster swarm
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.HOST }} 'docker service inspect coffee-shop >/dev/null 2>&1 && docker service update --replicas 9 coffee-shop || docker service create -p 3000:3000 --replicas=9 --name coffee-shop jorgegabriel/coffee-shop:latest'
+```
+
+### Etapa 3: Monitoramento do Sistema
+Configure um sistema de monitoramento (sugerimos prometheus + grafana) para o cluster e a aplicação
+Coffee Shop
+.
+
+Instalação e configuração do Portainer para melhor gerenciamento do Cluster:
+
+```yaml
+version: '3.8'
+
+services:
+  agent:
+    image: portainer/agent:latest
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /var/lib/docker/volumes:/var/lib/docker/volumes
+    networks:
+      - agent_network
+    deploy:
+      mode: global
+
+  portainer:
+    image: portainer/portainer-ce:latest
+    ports:
+      - 9000:9000
+    command: -H tcp://tasks.agent:9001 --tlsskipverify
+    volumes:
+      - /mnt/storage-pool/portainer:/data
+    networks:
+      - agent_network
+      - traefik_public
+    deploy:
+      placement:
+        constraints: [node.role == manager]
+
+networks:
+  agent_network:
+```
+Referência: https://prometheus.io/docs/guides/dockerswarm/
+
+Habilitar o monitoramento do docker em /etc/docker/daemon.json em todos os hosts do cluster:
+```
+{
+  "metrics-addr" : "127.0.0.1:9323",
+  "experimental" : true
+}
+```
+
+```
+sudo mkdir -p /mnt/storage-pool/portainer
+```
+
+```
+docker stack deploy -c portainer-stack.yaml portainer-stack
+```
+
+
+
+----
+
+
+```
+sudo vim /etc/prometheus/prometheus.yml
+```
+
+```yaml
+global:
+  scrape_interval: 15s 
+  #evaluation_interval: 15s
+  scrape_timeout: 15s
+  external_labels:
+    monitor: "codelab-monitor"
+
+rule_files:
+
+scrape_configs:
+  - job_name: prometheus
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  - job_name: docker
+    static_configs:
+      - targets: ["host.docker.internal:9323"]
+
+  - job_name: swarm
+    dockerswarm_sd_configs:
+      - host: unix:///var/run/docker.sock
+        role: nodes
+    #static_configs:
+    #  - targets: ["host.docker.internal:9323"]
+    relabel_configs:
+      # Fetch metrics on port 9323.
+      - source_labels: [__meta_dockerswarm_node_address]
+        target_label: __address__
+        replacement: $1:9323
+      # Set hostname as instance label
+      - source_labels: [__meta_dockerswarm_node_hostname]
+        target_label: instance
+
+  # Create a job for Docker Swarm containers.
+  - job_name: containers
+    dockerswarm_sd_configs:
+      - host: unix:///var/run/docker.sock
+        role: tasks
+    relabel_configs:
+      # Only keep containers that should be running.
+      - source_labels: [__meta_dockerswarm_task_desired_state]
+        regex: running
+        action: keep
+      # Only keep containers that have a `prometheus-job` label.
+      - source_labels: [__meta_dockerswarm_service_label_prometheus_job]
+        regex: .+
+        action: keep
+      # Use the prometheus-job Swarm label as Prometheus job label.
+      - source_labels: [__meta_dockerswarm_service_label_prometheus_job]
+        target_label: job
+
+  - job_name: coffee-shop
+    scrape_interval: 60s
+    scrape_timeout: 60s
+    static_configs:
+      - targets: ["host.docker.internal:3000"]
+```
+
+Criação da stack para o prometheus:
+```yaml
+version: '3.8'
+
+services:
+
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - 9090:9090
+    networks:
+      - private
+    command:
+      - --config.file=/etc/prometheus/prometheus.yml
+      - --storage.tsdb.retention.size=5GB
+      - --storage.tsdb.retention.time=15d
+    volumes:
+      - /etc/hosts:/etc/hosts
+      - /etc/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - data:/prometheus
+    deploy:
+      placement:
+        constraints:
+          - node.labels.prometheus.data == true
+networks:
+  private:
+
+volumes:
+  data:
+```
+
+### Aplicação da stack no Cluster
+Esssa abordagem está apresentando problemas de conexão. Ao subir com stack deploy, o Prometheus não consegue chegar no host.docker.internal.
+```bash
+docker stack deploy -c prometheus-stack.yaml prometheus-stack
+```
+
+Essa abordagem está funcionando:
+```bash
+docker run -d --name prometheus \
+    --mount type=bind,source=/etc/prometheus/prometheus.yml,destination=/etc/prometheus/prometheus.yml \
+     --mount type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock,ro \
+    -p 9090:9090 \
+    --add-host host.docker.internal=host-gateway \
+    prom/prometheus
+```
+
+### Monitoramento dos containers
+```bash
+docker service create --name cadvisor -l prometheus-job=cadvisor \
+    --mode=global --publish target=8080,mode=host \
+    --mount type=bind,src=/var/run/docker.sock,dst=/var/run/docker.sock,ro \
+    --mount type=bind,src=/,dst=/rootfs,ro \
+    --mount type=bind,src=/var/run,dst=/var/run \
+    --mount type=bind,src=/sys,dst=/sys,ro \
+    --mount type=bind,src=/var/lib/docker,dst=/var/lib/docker,ro \
+    gcr.io/cadvisor/cadvisor -docker_only
+```
+
+### Monitoramento da aplicação coffe-shop
+O monitoramento da aplicação coffe-shop se dá através da adição do job no /etc/prometheus/prometheus.yaml:
+```yaml
+  - job_name: coffee-shop
+    scrape_interval: 60s
+    scrape_timeout: 60s
+    static_configs:
+      - targets: ["host.docker.internal:3000"]
+```
+
+### Implementando o Grafana
+docker volume create grafana-storage
+
+docker run -d -p 3001:3000 --name=grafana \
+  --volume grafana-storage:/var/lib/grafana \
+  --add-host host.docker.internal=host-gateway \
+  grafana/grafana-enterprise
