@@ -1,0 +1,14 @@
+---
+ - name: Docker Swarm Manager Configuration
+   hosts: docker_swarm_manager
+
+   roles:
+     - docker
+     - manager
+
+ - name: Docker Swarm Workes Configuration
+   hosts: docker_swarm_worker
+   roles:
+    - docker
+    - worker
+...

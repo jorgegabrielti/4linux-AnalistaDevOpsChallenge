@@ -1,0 +1,3 @@
+docker_user_to_docker_group: "<USER>"
+docker_swarm_manager_ip: "<IP ADDRESS>"
+docker_swarm_manager_port: "2377"

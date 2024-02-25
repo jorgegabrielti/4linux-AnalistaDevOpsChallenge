@@ -1,0 +1,12 @@
+[docker_swarm_manager]
+manager1 ansible_host=34.27.1.188
+
+[docker_swarm_worker]
+worker1 ansible_host=34.133.171.248
+worker2 ansible_host=35.225.97.158
+
+[all:vars]
+ansible_ssh_user=suporte
+ansible_become=true
+ansible_ssh_private_key_file=/mnt/c/Users/jgabriel/projects/4linux-challenge/ansible/challenge/ssh.key
+ansible_python_interpreter=/usr/bin/python3

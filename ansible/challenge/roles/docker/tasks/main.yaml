@@ -1,0 +1,21 @@
+---
+  - name: Update System
+    apt:
+     update_cache: yes
+
+  - name: Docker Install
+    shell: curl -sS https://get.docker.com | sh
+
+  - name: Docker restart
+    systemd:
+     state: restarted
+     enabled: yes
+     daemon_reload: yes
+     name: docker
+  
+  - name: adding existing user '{{ docker_user_to_docker_group }}' to group sudo
+    user:
+      name: '{{ docker_user_to_docker_group }}'
+      groups: docker
+      append: yes
+...
