@@ -1,5 +1,5 @@
 ---
-name: Portainer Stack Deploy
+name: Traefik Stack Deploy
 
 on:
   #push:
