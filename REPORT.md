@@ -395,7 +395,7 @@ systemctl restart docker
 ```
 
 #### Instalação e configuração do Prometheus
-O arquivo de configuração do Prometheus foi criado em **/etc/prometheus/prometheus.yaml**. Este arquivo será montado posteriomente pelo container do Prometheus. Seu conteúdo é o seguinte:
+O arquivo de configuração do Prometheus foi criado em **/home/<USER>/stacks/prometheus.yml**. Este arquivo será montado posteriomente pelo container do Prometheus durante o deploy da stack de monitoramento. Seu conteúdo é o seguinte:
 
 ```yaml
 global:
@@ -567,21 +567,22 @@ services:
 ... 
 ```
 
-  ### Aplicação da stack no Cluster
-  A stack de monitoramento foi aplicada com o seguinte comando:
-  ```bash
-  docker stack deploy -c monitoring-stack.yaml monitoring
-  ```
+### Aplicação da stack de monitoramento no Cluster
+A stack de monitoramento foi aplicada via pipeline do Github Actions. O workflow está definido no arquivo **.github/workflows/monitoring-stack_workflow.yaml**. No Github, em **Actions - Coffee Shop Deploy - Run workflow - Run workflow**:
 
-  Verificando o status da stack:
-  ```bash
-  docker stack ps monitoring
-  ```
-  ![docker-stack-ps-monitoring](./img/docker-stack-ps-monitoring.png)
+![coffee-shop-deploy-workflow](./img/coffee-shop-deploy-workflow.png)
 
-  Validando a coleta de métricas no Painel do Prometheus:
-  O painel do Prometheus está disponível em **http://\<IP ADDRESS\>:9090**:
-  ![prometheus-metrics](./img/prometheus-metrics.png)
+
+Verificando o status da stack:
+Após a execução do workflow com sucesso, para validar a aplicação da stack basta logar no host executar o comando abaixo:
+```bash
+docker stack ps monitoring
+```
+![docker-stack-ps-monitoring](./img/docker-stack-ps-monitoring.png)
+
+Validando a coleta de métricas no Painel do Prometheus:
+O painel do Prometheus está disponível em **http://\<IP ADDRESS\>:9090**:
+![prometheus-metrics](./img/prometheus-metrics.png)
 
   Validando os Dashboard do Grafana:
   O painel do Grafana está disponível em **http://\<IP ADDRESS\>:3001**:
@@ -596,44 +597,20 @@ services:
 
 ### Recomendação futura:
 - [x] Definição de um fluxo de CI/CD para ambientes de dev,hom e prod.
-- [x] Criação de workflows para implementação de stacks de monitoramento.
+- [x] Otmização do processo de build para que seja o mais efetivo e menos demorado possível.
+- [x] Implementação de proxy reverso com Traefik para controle de acesso centralizado através de subdomínios em todos os recursos implementados no Cluster Swarm.
 - [x] Implementação de logs.
 - [x] Implementação de tracing.
 
-**traefik-stack.yaml**:
-```yaml
-version: "3.7"
-services:
-  traefik:
-    image: "traefik:v2.8"
-    command:
-      - "--api.insecure=true"
-      - "--providers.docker=true"
-      - "--providers.docker.swarmMode=true"
-      - "--providers.docker.exposedbydefault=false"
-      - "--entrypoints.coffeeshop.address=:80"
-    ports:
-      - "80:80"
-      - "8081:8080"
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
-    deploy:
-      placement:
-        constraints:
-          - node.role == manager
-    volumes:
-      - "/var/run/docker.sock:/var/run/docker.sock:ro"
-```
 
-```bash
-docker stack deploy -c traefik-stack.yaml traefik
-```
-
+>[!NOTE]
+> 
+> Eu iniciei a implementação do Traefik, porém não soube faze-lo funcionar da maneira adequada para a configuração do proxy reverso para aplicação Coffee Shop.
 O Traefik está disponível na endereço http://\<IP ADDRESS\>:8081:
 
 ![traefik-dashboard](./img/traefik-dashboard.png)
 
-  <!---
+<!---
   Essa abordagem está funcionando:
   ```bash
   docker run -d --name prometheus \
@@ -676,4 +653,4 @@ O Traefik está disponível na endereço http://\<IP ADDRESS\>:8081:
     --volume grafana-storage:/var/lib/grafana \
     --add-host host.docker.internal=host-gateway \
     grafana/grafana-enterprise
-  -->
+-->
