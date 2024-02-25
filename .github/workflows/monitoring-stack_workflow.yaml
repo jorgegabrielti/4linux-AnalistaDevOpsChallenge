@@ -28,8 +28,8 @@ jobs:
         run: ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
 
       - name: Coffe-Shop Stack SSH Transfer to Cluster Swarm
-        run: scp coffee-shop-stack.yaml ${{ secrets.SSH_USER }}@${{ secrets.HOST }}:/home/suporte/stacks/
+        run: scp monitoring-stack.yaml ${{ secrets.SSH_USER }}@${{ secrets.HOST }}:/home/suporte/stacks/
       
       - name: Coffe-Shop Stack Deploy
-        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.HOST }} 'docker stack deploy -c stacks/coffee-shop-stack.yaml coffee-shop'
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.HOST }} 'docker stack deploy -c stacks/monitoring-stack.yaml monitoring'
 ...
