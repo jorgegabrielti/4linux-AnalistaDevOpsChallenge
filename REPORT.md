@@ -583,6 +583,11 @@
   ![grafana-coffe-shop](./img/grafana-coffe-shop.png)
   ![grafana-docker-swarm](./img/grafana-docker-swarm.png)
 
+### Status atual do ambiente:
+- [x] Etapa 1: Automação com IaC (Infrastructure As Code)
+- [x] Etapa 2: Pipeline de Deploy 
+- [x] Etapa 3: Monitoramento do Sistema
+
   <!---
   Essa abordagem está funcionando:
   ```bash
