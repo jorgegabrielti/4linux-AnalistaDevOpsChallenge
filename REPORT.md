@@ -1,6 +1,6 @@
   # Escopo do Desafio
   ## Etapa 1: Automação com IaC (Infrastructure As Code)
-  Demonstre sua expertise em ferramentas de automação, preferencialmentecom Ansible (ou qualquer outra ferramenta de IaC que preferir). Sua tarefa é:
+  Demonstre sua expertise em ferramentas de automação, preferencialmente com Ansible (ou qualquer outra ferramenta de IaC que preferir). Sua tarefa é:
 
   #### 1. Instalar e configurar um cluster Kubernetes com k3s OU um cluster Docker Swarm em 3 máquinas:
     - Máquina master-1: Nó master.
@@ -328,7 +328,7 @@
 >
 > MELHORIA NO GERENCIAMENTO DO CLUSTER
 
-  Instalação e configuração do Portainer facilitar o gerenciamento do Cluster:
+  Instalação e configuração do Portainer para facilitar o gerenciamento do Cluster:
 
   ```yaml
   ---
@@ -364,7 +364,7 @@
   ...
   ```
 
-  Criação do diretório utilizado pelo Portainer pra storage:
+  Criação do diretório utilizado pelo Portainer para storage:
   ```bash
   sudo mkdir -p /mnt/storage-pool/portainer
   ```
