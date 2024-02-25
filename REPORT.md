@@ -589,6 +589,15 @@ O painel do Prometheus está disponível em **http://\<IP ADDRESS\>:9090**:
   ![grafana-coffe-shop](./img/grafana-coffe-shop.png)
   ![grafana-docker-swarm](./img/grafana-docker-swarm.png)
 
+### Avaliação do desafio
+>[!NOTA]
+> O teste proposto foi de fato um desafio técnico para mim. A quase 3 anos que não tinha contato com tecnologias como o Ansible e Docker Swarm, porque em meu dia a dia de trabalho atuava com outras tecnologias. Eu precisei consultar minhas documentações de estudo para refrescar a memória. 
+>
+> Em relação ao Prometheus, não sabia praticamente nada antes do Desafio e particularmente foi gratificante sair do 0 e implementar uma stack de monitoramento baseada nessa ferramenta. Agora estou bem impolgado para estuda-la mais :). 
+>
+> A pipeline foi onde tive um pouco mais de difuldade durante a implementação. u já havia tido contato com o Github Actions, porém não no nível de criação de pipeline, e portanto, tive que aprender a criá-las do 0. Isso foi muito bom para mim e agora estou com bastante interesse em dissecar o Github no geral, não apenas a parte de Actions.
+
+
 ### Status atual do ambiente:
 - [x] Etapa 1: Automação com IaC (Infrastructure As Code)
 - [x] Etapa 2: Pipeline de Deploy 
@@ -605,10 +614,12 @@ O painel do Prometheus está disponível em **http://\<IP ADDRESS\>:9090**:
 
 >[!NOTE]
 > 
-> Eu iniciei a implementação do Traefik, porém não soube faze-lo funcionar da maneira adequada para a configuração do proxy reverso para aplicação Coffee Shop.
+> Eu iniciei a implementação do Traefik, porém não soube faze-lo funcionar da maneira adequada para a configuração do proxy reverso para aplicação Coffee Shop. Este é um ponto de melhoria que requer mais estudos da minha parte.
 O Traefik está disponível na endereço http://\<IP ADDRESS\>:8081:
 
 ![traefik-dashboard](./img/traefik-dashboard.png)
+
+
 
 <!---
   Essa abordagem está funcionando:
