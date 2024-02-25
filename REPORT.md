@@ -591,6 +591,12 @@
 - [x] Etapa 3: Monitoramento do Sistema
 - [x] Implementação Extra do Traefik como proxy
 
+### Recomendação futura:
+- [x] Definição de um fluxo de CI/CD para ambientes de dev,hom e prod.
+- [x] Criação de workflows para implementação de stacks de monitoramento.
+- [x] Implementação de logs.
+- [x] Implementação de tracing.
+
 **traefik-stack.yaml**:
 ```yaml
 version: "3.7"
