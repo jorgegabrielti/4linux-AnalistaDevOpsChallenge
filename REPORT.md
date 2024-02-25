@@ -226,7 +226,7 @@
   ### Etapa 2: Pipeline de Deploy
   Implemente uma pipeline no GitlabCI ou Github Actions para o deploy da aplicação Coffee Shop no cluster configurado na etapa anterior. Código-fonte disponível em: https://gitlab.com/o_sgoncalves/coffee-shop.
 
-  Para a pipeline foi criado o arquivo .git/workflows/coffee-shop_deploy.yaml abaixo, que consiste nos seguintes passos:
+  Para a pipeline foi criado o arquivo .git/workflows/coffee-shop_deploy.yaml no repositório da aplicação coffee-shop, que consiste nos seguintes passos:
 
   - Login do Docker Hub
   - Build e Push da imagem da aplicação coffee-shop para o Docker Hub
@@ -317,9 +317,11 @@
   ```
 
   ### Etapa 3: Monitoramento do Sistema
-  Configure um sistema de monitoramento (sugerimos prometheus + grafana) para o cluster e a aplicação
-  Coffee Shop
+  Configure um sistema de monitoramento (sugerimos prometheus + grafana) para o cluster e a aplicação Coffee Shop
   .
+>[!NOTE]
+> 
+> OS PASSOS ABAIXO FORAM EXECUTADOS NO HOST master-01
 
   #### Instalação do Portainer
   >[!INFO]
