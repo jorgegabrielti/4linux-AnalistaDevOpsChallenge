@@ -589,6 +589,40 @@
 - [x] Etapa 1: Automação com IaC (Infrastructure As Code)
 - [x] Etapa 2: Pipeline de Deploy 
 - [x] Etapa 3: Monitoramento do Sistema
+- [x] Implementação Extra do Traefik como proxy
+
+**traefik-stack.yaml**:
+```yaml
+version: "3.7"
+services:
+  traefik:
+    image: "traefik:v2.8"
+    command:
+      - "--api.insecure=true"
+      - "--providers.docker=true"
+      - "--providers.docker.swarmMode=true"
+      - "--providers.docker.exposedbydefault=false"
+      - "--entrypoints.coffeeshop.address=:80"
+    ports:
+      - "80:80"
+      - "8081:8080"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    deploy:
+      placement:
+        constraints:
+          - node.role == manager
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+```
+
+```bash
+docker stack deploy -c traefik-stack.yaml traefik
+```
+
+O Traefik está disponível na endereço http://\<IP ADDRESS\>:8081:
+
+![traefik-dashboard](./img/traefik-dashboard.png)
 
   <!---
   Essa abordagem está funcionando:
