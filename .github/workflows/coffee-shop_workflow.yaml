@@ -1,3 +1,4 @@
+---
 name: Coffee Shop Deploy
 
 on:
@@ -53,3 +54,4 @@ jobs:
       
       - name: Coffe-Shop Stack Deploy
         run: ssh ${{ secrets.SSH_USER }}@${{ secrets.HOST }} 'docker stack deploy -c stacks/coffee-shop-stack.yaml coffee-shop'
+...
