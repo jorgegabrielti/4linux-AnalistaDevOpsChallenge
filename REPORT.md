@@ -324,9 +324,9 @@
 > OS PASSOS ABAIXO FORAM EXECUTADOS NO HOST master-01
 
   #### Instalação do Portainer
-  >[!INFO]
-  >
-  > MELHORIA NO GERENCIAMENTO DO CLUSTER
+>[!INFO]
+>
+> MELHORIA NO GERENCIAMENTO DO CLUSTER
 
   Instalação e configuração do Portainer facilitar o gerenciamento do Cluster:
 
