@@ -575,7 +575,13 @@ docker stack ps monitoring
 ![docker-stack-ps-monitoring](./img/docker-stack-ps-monitoring.png)
 
 Validando a coleta de métricas no Painel do Prometheus:
+O painel do Prometheus está disponível em **http://\<IP ADDRESS\>:9090**:
 ![prometheus-metrics](./img/prometheus-metrics.png)
+
+Validando os Dashboard do Grafana:
+O painel do Grafana está disponível em **http://\<IP ADDRESS\>:3001**:
+![grafana-coffe-shop](./img/grafana-coffe-shop.png)
+![grafana-docker-swarm](./img/grafana-docker-swarm.png)
 
 <!---
 Essa abordagem está funcionando:
