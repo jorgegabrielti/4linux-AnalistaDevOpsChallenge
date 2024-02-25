@@ -443,8 +443,8 @@ scrape_configs:
         target_label: job
 
   - job_name: coffee-shop
-    scrape_interval: 60s
-    scrape_timeout: 90s
+    scrape_interval: 30s
+    scrape_timeout: 60s
     static_configs:
       - targets: ["host.docker.internal:3000"]
 
@@ -464,8 +464,9 @@ Ele contém as seguintes configurações:
 - **job_name: coffee-shop**: monitoramento da aplicação coffee-shop.
 - **job_name: cadvisor**: monitoramento do containr do cadvisor.
 
-Criação da stack de monitoramento:
+Criação do arquivo da stack de monitoramento **monitoring-stack.yaml**:
 ```yaml
+---
 version: '3.7'
 
 volumes:
@@ -558,13 +559,23 @@ services:
           - node.role==manager
       restart_policy:
         condition: on-failure
+...
 ```
 
 ### Aplicação da stack no Cluster
-A stack dem monitoramento foi aplicada com o seguinte comando:
+A stack de monitoramento foi aplicada com o seguinte comando:
 ```bash
 docker stack deploy -c monitoring-stack.yaml monitoring
 ```
+
+Verificando o status da stack:
+```bash
+docker stack ps monitoring
+```
+![docker-stack-ps-monitoring](./img/docker-stack-ps-monitoring.png)
+
+Validando a coleta de métricas no Painel do Prometheus:
+![prometheus-metrics](./img/prometheus-metrics.png)
 
 <!---
 Essa abordagem está funcionando:
