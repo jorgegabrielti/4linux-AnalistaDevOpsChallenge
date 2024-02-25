@@ -226,7 +226,7 @@
   ### Etapa 2: Pipeline de Deploy
   Implemente uma pipeline no GitlabCI ou Github Actions para o deploy da aplicação Coffee Shop no cluster configurado na etapa anterior. Código-fonte disponível em: https://gitlab.com/o_sgoncalves/coffee-shop.
 
-  Para a pipeline foi criado o arquivo .git/workflows/coffee-shop_deploy.yaml no repositório da aplicação coffee-shop, que consiste nos seguintes passos:
+  Para a pipeline foi criado o arquivo .git/workflows/coffee-shop_workflos.yaml no repositório da aplicação coffee-shop, que consiste nos seguintes passos:
 
   - Login do Docker Hub
   - Build e Push da imagem da aplicação coffee-shop para o Docker Hub
@@ -235,7 +235,7 @@
 
   >[!NOTE]
   > 
-  > ESTE WORKFLOW ESTÁ HABILITADO PARA DISPARAR DE FORMA MANUAL APENAS. CABEM MUITAS MELHHORIAS RELACIONADAS AO FLUXO DE CI/CD MAIS ADEQUADO PARA O CENÁRIO.
+  > ESTE WORKFLOW ESTÁ HABILITADO PARA DISPARAR DE FORMA MANUAL APENAS. CABEM MUITAS MELHORIAS RELACIONADAS AO FLUXO DE CI/CD E EVENTOS QUE PODERIAM DISPARAR A PIPELINE.
 
 
 
@@ -267,132 +267,135 @@
   - **HOST**: Endereço IP do manager.
   - **SSH_USER**: usuário de autenticação via ssh no manager.
 
+```yaml
+---
+name: Coffee Shop Deploy
 
+on:
+  #push:
+  #  branches:
+  #    - jorge
+  workflow_dispatch:
 
-  ```yaml
-  name: Coffee Shop Deploy
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      
+      - name: Build and push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:latest
+  
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Checkout stack
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            docker-stacks/coffee-shop-stack.yaml
+          sparse-checkout-cone-mode: false
+      
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.DOCKER_SSH_PRIVATE_KEY }}    
+          known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
 
-  on:
-    #push:
-    #  branches:
-    #    - jorge
-    workflow_dispatch:
+      - name: Adding Known Hosts
+        run: ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
 
-  jobs:
-    build:
-      runs-on: ubuntu-latest
-      steps:
-        - name: Checkout
-          uses: actions/checkout@v4
-        
-        - name: Login to Docker Hub
-          uses: docker/login-action@v3
-          with:
-            username: ${{ secrets.DOCKER_USERNAME }}
-            password: ${{ secrets.DOCKERHUB_TOKEN }}
-        - name: Set up Docker Buildx
-          uses: docker/setup-buildx-action@v3
-        
-        - name: Build and push
-          uses: docker/build-push-action@v5
-          with:
-            context: .
-            push: true
-            tags: ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:latest
-    
-    deploy:
-      runs-on: ubuntu-latest
-      needs: build
-      steps:
-        - name: Install SSH Key
-          uses: shimataro/ssh-key-action@v2
-          with:
-            key: ${{ secrets.DOCKER_SSH_PRIVATE_KEY }}    
-            known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
+      - name: Coffe-Shop Stack SSH Transfer to Cluster Swarm
+        run: scp docker-stacks/coffee-shop-stack.yaml ${{ secrets.SSH_USER }}@${{ secrets.HOST }}:/home/suporte/stacks/
+      
+      - name: Coffe-Shop Stack Deploy
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.HOST }} 'docker stack deploy -c stacks/coffee-shop-stack.yaml coffee-shop'
+...
+```
 
-        - name: Adding Known Hosts
-          run: ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
-        - name: Deploy stack to cluster swarm
-          run: ssh ${{ secrets.SSH_USER }}@${{ secrets.HOST }} 'docker service create -p 3000:3000 --replicas=9 --name coffee-shop --label "traefik.enable=true" --label "traefik.http.routers.frontend.rule=Host(\`analistadevopschallenge.io\`)" --label "traefik.http.routers.frontend.entrypoints=coffeeshop" --label "traefik.http.services.frontend.loadbalancer.server.port=3000"  jorgegabriel/coffee-shop:latest'
-  ```
-
-  ### Etapa 3: Monitoramento do Sistema
-  Configure um sistema de monitoramento (sugerimos prometheus + grafana) para o cluster e a aplicação Coffee Shop
+### Etapa 3: Monitoramento do Sistema
+Configure um sistema de monitoramento (sugerimos prometheus + grafana) para o cluster e a aplicação Coffee Shop
   .
 >[!NOTE]
 > 
-> OS PASSOS ABAIXO FORAM EXECUTADOS NO HOST master-01
+> OS PASSOS ABAIXO FORAM EXECUTADOS NO HOST master-01 via pipeline do Github Actions
 
-  #### Instalação do Portainer
+#### Instalação do Portainer
 >[!NOTE]
 >
 > MELHORIA NO GERENCIAMENTO DO CLUSTER
 
-  Instalação e configuração do Portainer para facilitar o gerenciamento do Cluster:
+Instalação e configuração do Portainer para facilitar o gerenciamento do Cluster:
+#### Github Actions Workflow: Portainer Stack Deploy
+```yaml
+---
+name: Portainer Stack Deploy
 
-  ```yaml
-  ---
-  version: '3.8'
+on:
+  #push:
+  #  branches:
+  #    - jorge
+  workflow_dispatch:
 
-  services:
-    agent:
-      image: portainer/agent:latest
-      volumes:
-        - /var/run/docker.sock:/var/run/docker.sock
-        - /var/lib/docker/volumes:/var/lib/docker/volumes
-      networks:
-        - agent_network
-      deploy:
-        mode: global
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout stack
+        uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            docker-stacks/portainer-stack.yaml
+          sparse-checkout-cone-mode: false
+      
+      - name: Install SSH Key
+        uses: shimataro/ssh-key-action@v2
+        with:
+          key: ${{ secrets.DOCKER_SSH_PRIVATE_KEY }}    
+          known_hosts: 'just-a-placeholder-so-we-dont-get-errors'
 
-    portainer:
-      image: portainer/portainer-ce:latest
-      ports:
-        - 9000:9000
-      command: -H tcp://tasks.agent:9001 --tlsskipverify
-      volumes:
-        - /mnt/storage-pool/portainer:/data
-      networks:
-        - agent_network
-        - traefik_public
-      deploy:
-        placement:
-          constraints: [node.role == manager]
+      - name: Adding Known Hosts
+        run: ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
 
-  networks:
-    agent_network:
-  ...
-  ```
+      - name: Coffe-Shop Stack SSH Transfer to Cluster Swarm
+        run: scp docker-stacks/portainer-stack.yaml ${{ secrets.SSH_USER }}@${{ secrets.HOST }}:/home/suporte/stacks/
+      
+      - name: Coffe-Shop Stack Deploy
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.HOST }} 'docker stack deploy -c stacks/portainer-stack.yaml portainer'
+...
+```
+O Portainer esta disponível em http://\<IP ADDRESS\>:9000
+![portainer](./img/portainer.png)
 
-  Criação do diretório utilizado pelo Portainer para storage:
-  ```bash
-  sudo mkdir -p /mnt/storage-pool/portainer
-  ```
-
-  Aplicação da stack no cluster:
-  ```bash
-  docker stack deploy -c portainer-stack.yaml portainer-stack
-  ```
-
-  O Portainer esta disponível em http://\<IP ADDRESS\>:9000
-  ![portainer](./img/portainer.png)
-
-  #### Instalação da Stack de Monitoramento
-  Habilitar a exposão de métricas do docker no arquivo **/etc/docker/daemon.json** em todos os hosts do cluster:
-  ```json
+#### Instalação da Stack de Monitoramento
+Habilitar a exposição de métricas do docker no arquivo **/etc/docker/daemon.json** em todos os hosts do cluster. Esta edição foi feita manualmente:
+```json
   {
     "metrics-addr" : "127.0.0.1:9323",
     "experimental" : true
   }
-  ```
-  É necessário reiniciar o docker para aplicar as configurações:
-  ```bash
-  systemctl restart docker
-  ```
+```
+É necessário reiniciar o docker para aplicar as configurações:
+```bash
+systemctl restart docker
+```
 
-
-  #### Instalação e configuração do Prometheus
-  O arquivo de configuração do Prometheus foi criado em **/etc/prometheus/prometheus.yaml**. Este arquivo será montado posteriomente pelo container do Prometheus. Seu conteúdo é o seguinte:
+#### Instalação e configuração do Prometheus
+O arquivo de configuração do Prometheus foi criado em **/etc/prometheus/prometheus.yaml**. Este arquivo será montado posteriomente pelo container do Prometheus. Seu conteúdo é o seguinte:
 
   ```yaml
   global:
