@@ -313,7 +313,7 @@
         - name: Adding Known Hosts
           run: ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
         - name: Deploy stack to cluster swarm
-          run: ssh ${{ secrets.SSH_USER }}@${{ secrets.HOST }} 'docker service inspect coffee-shop >/dev/null 2>&1 && docker service update --replicas 9 coffee-shop || docker service create -p 3000:3000 --replicas=9 --name coffee-shop jorgegabriel/coffee-shop:latest'
+          run: ssh ${{ secrets.SSH_USER }}@${{ secrets.HOST }} 'docker service create -p 3000:3000 --replicas=9 --name coffee-shop --label "traefik.enable=true" --label "traefik.http.routers.frontend.rule=Host(\`analistadevopschallenge.io\`)" --label "traefik.http.routers.frontend.entrypoints=coffeeshop" --label "traefik.http.services.frontend.loadbalancer.server.port=3000"  jorgegabriel/coffee-shop:latest'
   ```
 
   ### Etapa 3: Monitoramento do Sistema
