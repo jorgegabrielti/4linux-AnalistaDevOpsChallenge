@@ -54,6 +54,7 @@ jobs:
             coffee-shop-stack.yaml
           sparse-checkout-cone-mode: false
         #run: scp coffee-shop-stack.yaml ${{ secrets.SSH_USER }}@${{ secrets.HOST }}:/home/suporte/stacks/
-          run: pwd && ls -l
+      - name: Check repo in runnere  
+        run: pwd && ls -l
       #- name: Coffe-Shop Stack Deploy
       #  run: ssh ${{ secrets.SSH_USER }}@${{ secrets.HOST }} 'docker stack deploy -c stacks/coffee-shop-stack.yaml coffee-shop'
