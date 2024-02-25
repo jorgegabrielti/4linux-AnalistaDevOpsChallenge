@@ -1,5 +1,5 @@
 ---
-name: Monitoring Stack Deploy
+name: Portainer Stack Deploy
 
 on:
   #push:
@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           sparse-checkout: |
-            docker-stacks/monitoring-stack.yaml
+            docker-stacks/traefik-stack.yaml
           sparse-checkout-cone-mode: false
       
       - name: Install SSH Key
@@ -28,8 +28,8 @@ jobs:
         run: ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
 
       - name: Coffe-Shop Stack SSH Transfer to Cluster Swarm
-        run: scp docker-stacks/monitoring-stack.yaml ${{ secrets.SSH_USER }}@${{ secrets.HOST }}:/home/suporte/stacks/
+        run: scp docker-stacks/traefik-stack.yaml ${{ secrets.SSH_USER }}@${{ secrets.HOST }}:/home/suporte/stacks/
       
       - name: Coffe-Shop Stack Deploy
-        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.HOST }} 'docker stack deploy -c stacks/monitoring-stack.yaml monitoring'
+        run: ssh ${{ secrets.SSH_USER }}@${{ secrets.HOST }} 'docker stack deploy -c stacks/traefik-stack.yaml traefik'
 ...

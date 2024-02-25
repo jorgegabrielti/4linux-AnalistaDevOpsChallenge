@@ -37,7 +37,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           sparse-checkout: |
-            coffee-shop-stack.yaml
+            docker-stacks/coffee-shop-stack.yaml
           sparse-checkout-cone-mode: false
       
       - name: Install SSH Key
@@ -50,7 +50,7 @@ jobs:
         run: ssh-keyscan -H ${{ secrets.HOST }} >> ~/.ssh/known_hosts
 
       - name: Coffe-Shop Stack SSH Transfer to Cluster Swarm
-        run: scp coffee-shop-stack.yaml ${{ secrets.SSH_USER }}@${{ secrets.HOST }}:/home/suporte/stacks/
+        run: scp docker-stacks/coffee-shop-stack.yaml ${{ secrets.SSH_USER }}@${{ secrets.HOST }}:/home/suporte/stacks/
       
       - name: Coffe-Shop Stack Deploy
         run: ssh ${{ secrets.SSH_USER }}@${{ secrets.HOST }} 'docker stack deploy -c stacks/coffee-shop-stack.yaml coffee-shop'
