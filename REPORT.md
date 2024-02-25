@@ -397,175 +397,175 @@ systemctl restart docker
 #### Instalação e configuração do Prometheus
 O arquivo de configuração do Prometheus foi criado em **/etc/prometheus/prometheus.yaml**. Este arquivo será montado posteriomente pelo container do Prometheus. Seu conteúdo é o seguinte:
 
-  ```yaml
-  global:
-    scrape_interval: 15s 
-    #evaluation_interval: 15s
+```yaml
+global:
+  scrape_interval: 15s 
+  #evaluation_interval: 15s
+  scrape_timeout: 15s
+  external_labels:
+    monitor: "codelab-monitor"
+
+rule_files:
+
+scrape_configs:
+  - job_name: prometheus
+    static_configs:
+      - targets: ["localhost:9090"]
+
+  - job_name: docker
+    static_configs:
+      - targets: ["host.docker.internal:9323"]
+
+  - job_name: swarm
+    dockerswarm_sd_configs:
+      - host: unix:///var/run/docker.sock
+        role: nodes
+    relabel_configs:
+      # Fetch metrics on port 9323.
+      - source_labels: [__meta_dockerswarm_node_address]
+        target_label: __address__
+        replacement: $1:9323
+      # Set hostname as instance label
+      - source_labels: [__meta_dockerswarm_node_hostname]
+        target_label: instance
+
+  # Create a job for Docker Swarm containers.
+  - job_name: containers
+    dockerswarm_sd_configs:
+      - host: unix:///var/run/docker.sock
+        role: tasks
+    relabel_configs:
+      # Only keep containers that should be running.
+      - source_labels: [__meta_dockerswarm_task_desired_state]
+        regex: running
+        action: keep
+      # Only keep containers that have a `prometheus-job` label.
+      - source_labels: [__meta_dockerswarm_service_label_prometheus_job]
+        regex: .+
+        action: keep
+      # Use the prometheus-job Swarm label as Prometheus job label.
+      - source_labels: [__meta_dockerswarm_service_label_prometheus_job]
+        target_label: job
+
+  - job_name: coffee-shop
+    scrape_interval: 30s
     scrape_timeout: 15s
-    external_labels:
-      monitor: "codelab-monitor"
+    static_configs:
+      - targets: ["host.docker.internal:3000"]
 
-  rule_files:
+  - job_name: cadvisor
+    scrape_interval: 60s
+    scrape_timeout: 60s
+    static_configs:
+      - targets: ["host.docker.internal:8080"]
+```
 
-  scrape_configs:
-    - job_name: prometheus
-      static_configs:
-        - targets: ["localhost:9090"]
+Ele contém as seguintes configurações:
 
-    - job_name: docker
-      static_configs:
-        - targets: ["host.docker.internal:9323"]
+ - **job_name: prometheus**: auto-monitoramento do Prometheus.
+ - **job_name: docker**: monitoramento do docker daemon.
+ - **job_name: swarm**: monitoramento dos recursos do Docker Swarm.
+ - **job_name: containers**: monitoramento dos containers.
+ - **job_name: coffee-shop**: monitoramento da aplicação coffee-shop.
+ - **job_name: cadvisor**: monitoramento do containr do cadvisor.
 
-    - job_name: swarm
-      dockerswarm_sd_configs:
-        - host: unix:///var/run/docker.sock
-          role: nodes
-      relabel_configs:
-        # Fetch metrics on port 9323.
-        - source_labels: [__meta_dockerswarm_node_address]
-          target_label: __address__
-          replacement: $1:9323
-        # Set hostname as instance label
-        - source_labels: [__meta_dockerswarm_node_hostname]
-          target_label: instance
+Criação do arquivo da stack de monitoramento **monitoring-stack.yaml**:
+```yaml
+---
+version: '3.7'
 
-    # Create a job for Docker Swarm containers.
-    - job_name: containers
-      dockerswarm_sd_configs:
-        - host: unix:///var/run/docker.sock
-          role: tasks
-      relabel_configs:
-        # Only keep containers that should be running.
-        - source_labels: [__meta_dockerswarm_task_desired_state]
-          regex: running
-          action: keep
-        # Only keep containers that have a `prometheus-job` label.
-        - source_labels: [__meta_dockerswarm_service_label_prometheus_job]
-          regex: .+
-          action: keep
-        # Use the prometheus-job Swarm label as Prometheus job label.
-        - source_labels: [__meta_dockerswarm_service_label_prometheus_job]
-          target_label: job
+volumes:
+    prometheus_data: {}
+    grafana_data: {}
 
-    - job_name: coffee-shop
-      scrape_interval: 30s
-      scrape_timeout: 60s
-      static_configs:
-        - targets: ["host.docker.internal:3000"]
+networks:
+  monitor-net:
 
-    - job_name: cadvisor
-      scrape_interval: 90s
-      scrape_timeout: 80s
-      static_configs:
-        - targets: ["host.docker.internal:8080"]
-  ```
+services:
 
-  Ele contém as seguintes configurações:
+  prometheus:
+    image: prom/prometheus:v2.36.2
+    volumes:
+      - /etc/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+      - prometheus_data:/prometheus
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+      - '--web.console.libraries=/usr/share/prometheus/console_libraries'
+      - '--web.console.templates=/usr/share/prometheus/consoles'
+      - '--web.enable-lifecycle'
+      - '--web.enable-admin-api'
+    ports:
+      - 9090:9090
+    depends_on:
+      - cadvisor
+    networks:
+      - monitor-net
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    deploy:
+      placement:
+        constraints:
+          - node.role==manager
+      restart_policy:
+        condition: on-failure
 
-  - **job_name: prometheus**: auto-monitoramento do Prometheus.
-  - **job_name: docker**: monitoramento do docker daemon.
-  - **job_name: swarm**: monitoramento dos recursos do Docker Swarm.
-  - **job_name: containers**: monitoramento dos containers.
-  - **job_name: coffee-shop**: monitoramento da aplicação coffee-shop.
-  - **job_name: cadvisor**: monitoramento do containr do cadvisor.
-
-  Criação do arquivo da stack de monitoramento **monitoring-stack.yaml**:
-  ```yaml
-  ---
-  version: '3.7'
-
-  volumes:
-      prometheus_data: {}
-      grafana_data: {}
-
-  networks:
-    monitor-net:
-
-  services:
-
-    prometheus:
-      image: prom/prometheus:v2.36.2
-      volumes:
-        - /etc/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
-        - prometheus_data:/prometheus
-        - /var/run/docker.sock:/var/run/docker.sock:ro
-      command:
-        - '--config.file=/etc/prometheus/prometheus.yml'
-        - '--storage.tsdb.path=/prometheus'
-        - '--web.console.libraries=/usr/share/prometheus/console_libraries'
-        - '--web.console.templates=/usr/share/prometheus/consoles'
-        - '--web.enable-lifecycle'
-        - '--web.enable-admin-api'
-      ports:
-        - 9090:9090
-      depends_on:
-        - cadvisor
-      networks:
-        - monitor-net
-      extra_hosts:
-        - "host.docker.internal:host-gateway"
-      deploy:
-        placement:
-          constraints:
-            - node.role==manager
-        restart_policy:
+  node-exporter:
+    image: quay.io/prometheus/node-exporter:latest
+    volumes:
+      - /proc:/host/proc:ro
+      - /sys:/host/sys:ro
+      - /:/rootfs:ro
+    command:
+      - '--path.procfs=/host/proc'
+      - '--path.sysfs=/host/sys'
+      - --collector.filesystem.ignored-mount-points
+      - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
+    ports:
+      - 9100:9100
+    networks:
+      - monitor-net
+    deploy:
+      mode: global
+      restart_policy:
           condition: on-failure
 
-    node-exporter:
-      image: quay.io/prometheus/node-exporter:latest
-      volumes:
-        - /proc:/host/proc:ro
-        - /sys:/host/sys:ro
-        - /:/rootfs:ro
-      command:
-        - '--path.procfs=/host/proc'
-        - '--path.sysfs=/host/sys'
-        - --collector.filesystem.ignored-mount-points
-        - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
-      ports:
-        - 9100:9100
-      networks:
-        - monitor-net
-      deploy:
-        mode: global
-        restart_policy:
-            condition: on-failure
-
-    cadvisor:
-      image: gcr.io/cadvisor/cadvisor
-      volumes:
-        - /:/rootfs:ro
-        - /var/run:/var/run:rw
-        - /sys:/sys:ro
-        - /var/lib/docker/:/var/lib/docker:ro
-      ports:
-        - 8080:8080
-      networks:
-        - monitor-net
-      deploy:
-        mode: global
-        restart_policy:
-            condition: on-failure
-
-    grafana:
-      image: grafana/grafana
-      depends_on:
-        - prometheus
-      ports:
-        - 3001:3000
-      volumes:
-        - grafana_data:/var/lib/grafana
-      networks:
-        - monitor-net
-      user: "472"
-      deploy:
-        placement:
-          constraints:
-            - node.role==manager
-        restart_policy:
+  cadvisor:
+    image: gcr.io/cadvisor/cadvisor
+    volumes:
+      - /:/rootfs:ro
+      - /var/run:/var/run:rw
+      - /sys:/sys:ro
+      - /var/lib/docker/:/var/lib/docker:ro
+    ports:
+      - 8080:8080
+    networks:
+      - monitor-net
+    deploy:
+      mode: global
+      restart_policy:
           condition: on-failure
-  ...
-  ```
+
+  grafana:
+    image: grafana/grafana
+    depends_on:
+      - prometheus
+    ports:
+      - 3001:3000
+    volumes:
+      - grafana_data:/var/lib/grafana
+    networks:
+      - monitor-net
+    user: "472"
+    deploy:
+      placement:
+        constraints:
+          - node.role==manager
+      restart_policy:
+        condition: on-failure
+... 
+```
 
   ### Aplicação da stack no Cluster
   A stack de monitoramento foi aplicada com o seguinte comando:
