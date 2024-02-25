@@ -324,7 +324,7 @@
 > OS PASSOS ABAIXO FORAM EXECUTADOS NO HOST master-01
 
   #### Instalação do Portainer
->[!INFO]
+>[!NOTE]
 >
 > MELHORIA NO GERENCIAMENTO DO CLUSTER
 
