@@ -589,6 +589,7 @@ O painel do Prometheus está disponível em **http://\<IP ADDRESS\>:9090**:
   ![grafana-coffe-shop](./img/grafana-coffe-shop.png)
   ![grafana-docker-swarm](./img/grafana-docker-swarm.png)
 
+## Etapa 4: Relatório Técnico
 ### Avaliação do desafio
 
 >[!NOTE]
