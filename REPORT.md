@@ -2,13 +2,13 @@
   ## Etapa 1: Automação com IaC (Infrastructure As Code)
   Demonstre sua expertise em ferramentas de automação, preferencialmente com Ansible (ou qualquer outra ferramenta de IaC que preferir). Sua tarefa é:
 
-  #### 1. Instalar e configurar um cluster Kubernetes com k3s OU um cluster Docker Swarm em 3 máquinas:
+  ### 1. Instalar e configurar um cluster Kubernetes com k3s OU um cluster Docker Swarm em 3 máquinas:
     - Máquina master-1: Nó master.
     - Máquina worker-2: Nó worker.
     - Máquina worker-3: Nó worker.
 
-  ### 2. Procedimentos de implementação do que foi pedido:
-  #### 2.1. Acessei as vms disponíveis através de uma conexão ssh com usuário e chave pública fornecida para checar qual era o Sistema Operacional:
+  #### 1.1 Procedimentos de implementação do que foi pedido:
+  ##### 1.1.1 Acessei as vms disponíveis através de uma conexão ssh com usuário e chave pública fornecida para checar qual era o Sistema Operacional:
   ```
   ssh -i <PUBLIC KEY> <USUARIO>@<IP> 'cat /etc/os-release'
   ```
@@ -25,7 +25,7 @@
   BUG_REPORT_URL="https://bugs.debian.org/"
   ```
 
-  #### 2.2 Instalei o Ansible 2.10.8 em meu ambiente local WSL 2 Ubuntu 22.04 através do comando:
+  #### 1.1.2 Instalei o Ansible 2.10.8 em meu ambiente local WSL 2 Ubuntu 22.04 através do comando:
   ```bash
   apt install -y ansible
   ```
@@ -44,7 +44,7 @@
     python version = 3.10.12 (main, Nov 20 2023, 15:14:05) [GCC 11.4.0]
   ```
 
-  #### 2.3. Configurei o ambiente Ansible com a seguinte estrutura de diretórios:
+  #### 1.1.3 Configurei o ambiente Ansible com a seguinte estrutura de diretórios:
   ```text
   ansible
       ├── group_vars
@@ -63,7 +63,7 @@
       │           └── main.yaml
       └── ssh.key
   ```
-  ##### 2.4 Entendendo a configuração do Ansible:
+  ##### 1.1.3.1 Entendendo a configuração do Ansible:
   >[!IMPORTANT]
   >
   >Os parâmetros **\<IP ADDRESS\>** e **\<PATH\>/\<PUBLIC KEY\>** foram substituídos pelos dados fornecidos.
@@ -111,12 +111,12 @@
 
   - **Docker Swarm Workes Configuration**: passo macro aplicado nos hosts do grupo **docker_swarm_worker**. Ele aplica as roles de instalação e configuração do Docker e obtenção do token gerado pelo manager e ingresso dos workers no Cluster. Além disso, adiciona o usuário ao grupo docker.
 
-#### 2.5. Executei o playbook Ansible para provisionamento do Cluster Docker Swarm:
+#### 1.1.4 Executei o playbook Ansible para provisionamento do Cluster Docker Swarm:
 ```
 ansible-playbook -i hosts main.yaml
 ```
 
-#### 2.6. Validação da instalação
+#### 1.1.5 Validação da instalação
 Após execução com sucesso do playbook Ansible, validei os passos descritos nele para os três hosts.
 
 - Verificando a saída do comando `docker info` **nos três hosts**: 
@@ -207,26 +207,26 @@ ssh -i challenge.pem <USER>@<IP ADDRESS> 'docker info'
   Insecure Registries:
     127.0.0.0/8
   Live Restore Enabled: false
-  ```
-  Uma alternativa para retornar a saída mais reduzida e apenas com a informação sobre o modo Swarm:
-  ```bash
-  ssh -i <PUBLIC KEY> <USER>@<IP ADDRESS> 'docker info | grep -wE "Swarm|Is Manager"'
-  ```
-  Saída para o manager:
-  ```text
-  Swarm: active
-    Is Manager: true
-  ```
-  Saída para os workers
-  ```text
-  Swarm: active
-    Is Manager: false
-  ```
+```
+Uma alternativa para retornar a saída mais reduzida e apenas com a informação sobre o modo Swarm:
+```bash
+ssh -i <PUBLIC KEY> <USER>@<IP ADDRESS> 'docker info | grep -wE "Swarm|Is Manager"'
+```
+Saída para o manager:
+```text
+Swarm: active
+  Is Manager: true
+```
+Saída para os workers
+```text
+Swarm: active
+  Is Manager: false
+```
 
 ### Etapa 2: Pipeline de Deploy
 Implemente uma pipeline no GitlabCI ou Github Actions para o deploy da aplicação Coffee Shop no cluster configurado na etapa anterior. Código-fonte disponível em: https://gitlab.com/o_sgoncalves/coffee-shop.
 
-Para a pipeline foi criado o arquivo .git/workflows/coffee-shop_workflos.yaml no repositório da aplicação coffee-shop, que consiste nos seguintes passos:
+2.1Para a pipeline foi criado o arquivo .git/workflows/coffee-shop_workflos.yaml no repositório da aplicação coffee-shop, que consiste nos seguintes passos:
 
 - Login do Docker Hub
 - Build e Push da imagem da aplicação coffee-shop para o Docker Hub
