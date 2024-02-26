@@ -7,8 +7,8 @@
     - Máquina worker-2: Nó worker.
     - Máquina worker-3: Nó worker.
 
-  ## Procedimentos de implementação do que foi pedido:
-  #### 1. Acessei as vms disponíveis através de uma conexão ssh com usuário e chave pública fornecida para checar qual era o Sistema Operacional:
+  ### 2. Procedimentos de implementação do que foi pedido:
+  #### 2.1. Acessei as vms disponíveis através de uma conexão ssh com usuário e chave pública fornecida para checar qual era o Sistema Operacional:
   ```
   ssh -i <PUBLIC KEY> <USUARIO>@<IP> 'cat /etc/os-release'
   ```
@@ -25,7 +25,7 @@
   BUG_REPORT_URL="https://bugs.debian.org/"
   ```
 
-  #### 2. Instalei o Ansible 2.10.8 em meu ambiente local WSL 2 Ubuntu 22.04 através do comando:
+  #### 2.2 Instalei o Ansible 2.10.8 em meu ambiente local WSL 2 Ubuntu 22.04 através do comando:
   ```bash
   apt install -y ansible
   ```
@@ -44,7 +44,7 @@
     python version = 3.10.12 (main, Nov 20 2023, 15:14:05) [GCC 11.4.0]
   ```
 
-  #### 3. Configurei o ambiente Ansible com a seguinte estrutura de diretórios:
+  #### 2.3. Configurei o ambiente Ansible com a seguinte estrutura de diretórios:
   ```text
   ansible
       ├── group_vars
@@ -63,7 +63,7 @@
       │           └── main.yaml
       └── ssh.key
   ```
-  ##### 3.1 Entendendo a configuração do Ansible:
+  ##### 2.4 Entendendo a configuração do Ansible:
   >[!IMPORTANT]
   >
   >Os parâmetros **\<IP ADDRESS\>** e **\<PATH\>/\<PUBLIC KEY\>** foram substituídos pelos dados fornecidos.
@@ -111,19 +111,19 @@
 
   - **Docker Swarm Workes Configuration**: passo macro aplicado nos hosts do grupo **docker_swarm_worker**. Ele aplica as roles de instalação e configuração do Docker e obtenção do token gerado pelo manager e ingresso dos workers no Cluster. Além disso, adiciona o usuário ao grupo docker.
 
-  #### 4. Executei o playbook Ansible para provisionamento do Cluster Docker Swarm:
-  ```
-  ansible-playbook -i hosts main.yaml
-  ```
+#### 2.5. Executei o playbook Ansible para provisionamento do Cluster Docker Swarm:
+```
+ansible-playbook -i hosts main.yaml
+```
 
-  #### 5. Validação da instalação
-  Após execução com sucesso do playbook Ansible, validei os passos descritos nele para os três hosts.
+#### 2.6. Validação da instalação
+Após execução com sucesso do playbook Ansible, validei os passos descritos nele para os três hosts.
 
-  - Verificando a saída do comando `docker info` **nos três hosts**: 
-  ```bash
-  ssh -i challenge.pem <USER>@<IP ADDRESS> 'docker info'
-  ```
-  ```bash
+- Verificando a saída do comando `docker info` **nos três hosts**: 
+```bash
+ssh -i challenge.pem <USER>@<IP ADDRESS> 'docker info'
+```
+```bash
   Client: Docker Engine - Community
   Version:    25.0.3
   Context:    default
@@ -223,49 +223,46 @@
     Is Manager: false
   ```
 
-  ### Etapa 2: Pipeline de Deploy
-  Implemente uma pipeline no GitlabCI ou Github Actions para o deploy da aplicação Coffee Shop no cluster configurado na etapa anterior. Código-fonte disponível em: https://gitlab.com/o_sgoncalves/coffee-shop.
+### Etapa 2: Pipeline de Deploy
+Implemente uma pipeline no GitlabCI ou Github Actions para o deploy da aplicação Coffee Shop no cluster configurado na etapa anterior. Código-fonte disponível em: https://gitlab.com/o_sgoncalves/coffee-shop.
 
-  Para a pipeline foi criado o arquivo .git/workflows/coffee-shop_workflos.yaml no repositório da aplicação coffee-shop, que consiste nos seguintes passos:
+Para a pipeline foi criado o arquivo .git/workflows/coffee-shop_workflos.yaml no repositório da aplicação coffee-shop, que consiste nos seguintes passos:
 
-  - Login do Docker Hub
-  - Build e Push da imagem da aplicação coffee-shop para o Docker Hub
-  - Confiugarações ssh para conexão com o Manager do Cluster Swarm
-  - Deploy da aplicação no Cluster Swarm via ssh
+- Login do Docker Hub
+- Build e Push da imagem da aplicação coffee-shop para o Docker Hub
+- Confiugarações ssh para conexão com o Manager do Cluster Swarm
+- Deploy da aplicação no Cluster Swarm via ssh
 
-  >[!NOTE]
-  > 
-  > ESTE WORKFLOW ESTÁ HABILITADO PARA DISPARAR DE FORMA MANUAL APENAS. CABEM MUITAS MELHORIAS RELACIONADAS AO FLUXO DE CI/CD E EVENTOS QUE PODERIAM DISPARAR A PIPELINE.
+>[!NOTE]
+> 
+> ESTE WORKFLOW ESTÁ HABILITADO PARA DISPARAR DE FORMA MANUAL APENAS. CABEM MUITAS MELHORIAS RELACIONADAS AO FLUXO DE CI/CD E EVENTOS QUE PODERIAM DISPARAR A PIPELINE.
 
-
-
-
-  >[!IMPORTANT]
-  >
-  > PARA CONEXÃO SSH COM A MÁQUINA VIRTUAL DO NODE MANAGER FOI NECESSÁRIO A CRIAÇÃO DE UM PAR DE CHAVES SSH `ssh-keygen -t rsa -b 4096 -C "email@email"`. ESTE PAR DE CHAVES FOI INSERIDO COMO SECRET NAS CONFIGURAÇÕES DO REPOSITÓRIO EM **Settings - Secrets and variables - Actions - New repository secret**
+>[!IMPORTANT]
+>
+> PARA CONEXÃO SSH COM A MÁQUINA VIRTUAL DO NODE MANAGER FOI NECESSÁRIO A CRIAÇÃO DE UM PAR DE CHAVES SSH `ssh-keygen -t rsa -b 4096 -C "email@email"`. ESTE PAR DE CHAVES FOI INSERIDO COMO SECRET NAS CONFIGURAÇÕES DO REPOSITÓRIO EM **Settings - Secrets and variables - Actions - New repository secret**
   ![img](./img/github-actions-secrets-and-variables.png)
 
 
-  Este workflow utiliza das seguintes variáveis de ambiente para a execução dos jobs:
+Este workflow utiliza das seguintes variáveis de ambiente para a execução dos jobs:
 
-  - **DOCKERHUB_TOKEN**: Token de autenticação PAT do Docker Hub para push da imagem durante o step de build. 
-  >[!NOTE]
-  >
-  > Para gerar um token de autenticação no Docker Hub:
-  > - Faça login no Docker Hub.
-  > - Selecione seu avatar no canto superior direito e no menu suspenso selecione >Minha conta.
-  > - Selecione a guia Segurança e depois Novo Token de Acesso.
-  > - Adicione uma descrição para o seu token. Use algo que indique o caso de uso ou finalidade do token.
-  >
-  > - Defina as permissões de acesso. As permissões de acesso são escopos que definem restrições em seus repositórios. Por exemplo, para permissões de leitura e gravação, um pipeline de automação pode criar uma imagem e enviá-la para um repositório. No entanto, não é possível excluir o repositório.
-  >
-  > - Selecione Gerar e copie o token que aparece na tela e salve-o. Você não poderá recuperar o token depois de fechar este prompt.
+- **DOCKERHUB_TOKEN**: Token de autenticação PAT do Docker Hub para push da imagem durante o step de build. 
+>[!NOTE]
+>
+> Para gerar um token de autenticação no Docker Hub:
+> - Faça login no Docker Hub.
+> - Selecione seu avatar no canto superior direito e no menu suspenso selecione >Minha conta.
+> - Selecione a guia Segurança e depois Novo Token de Acesso.
+> - Adicione uma descrição para o seu token. Use algo que indique o caso de uso ou finalidade do token.
+>
+> - Defina as permissões de acesso. As permissões de acesso são escopos que definem restrições em seus repositórios. Por exemplo, para permissões de leitura e gravação, um pipeline de automação pode criar uma imagem e enviá-la para um repositório. No entanto, não é possível excluir o repositório.
+>
+> - Selecione Gerar e copie o token que aparece na tela e salve-o. Você não poderá recuperar o token depois de fechar este prompt.
 
-  - **DOCKER_SSH_PRIVATE_KEY**: chave ssh privada gerada no manager. Utilizada pelo github durante a execução do workflow para autenticação na máquina virtual.
-  - **DOCKER_SSH_PUBLIC_KEY**: chave ssh publica gerada no manager. Utilizada pelo github durante a execução do workflow para autenticação na máquina virtual.
-  - **DOCKER_USERNAME**: usuario de autenticação no Docker Hub. Utilizando em conjunto com o PAT(Personal Access Token).
-  - **HOST**: Endereço IP do manager.
-  - **SSH_USER**: usuário de autenticação via ssh no manager.
+- **DOCKER_SSH_PRIVATE_KEY**: chave ssh privada gerada no manager. Utilizada pelo github durante a execução do workflow para autenticação na máquina virtual.
+- **DOCKER_SSH_PUBLIC_KEY**: chave ssh publica gerada no manager. Utilizada pelo github durante a execução do workflow para autenticação na máquina virtual.
+- **DOCKER_USERNAME**: usuario de autenticação no Docker Hub. Utilizando em conjunto com o PAT(Personal Access Token).
+- **HOST**: Endereço IP do manager.
+- **SSH_USER**: usuário de autenticação via ssh no manager.
 
 ```yaml
 ---
