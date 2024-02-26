@@ -567,7 +567,7 @@ services:
 ... 
 ```
 
-### Aplicação da stack de monitoramento no Cluster
+#### Aplicação da stack de monitoramento no Cluster
 A stack de monitoramento foi aplicada via pipeline do Github Actions. O workflow está definido no arquivo **.github/workflows/monitoring-stack_workflow.yaml**. No Github, em **Actions - Coffee Shop Deploy - Run workflow - Run workflow**:
 
 ![coffee-shop-deploy-workflow](./img/coffee-shop-deploy-workflow.png)
