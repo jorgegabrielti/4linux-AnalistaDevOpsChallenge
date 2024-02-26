@@ -223,10 +223,9 @@ Swarm: active
   Is Manager: false
 ```
 
-### Etapa 2: Pipeline de Deploy
-Implemente uma pipeline no GitlabCI ou Github Actions para o deploy da aplicação Coffee Shop no cluster configurado na etapa anterior. Código-fonte disponível em: https://gitlab.com/o_sgoncalves/coffee-shop.
-
-2.1Para a pipeline foi criado o arquivo .git/workflows/coffee-shop_workflos.yaml no repositório da aplicação coffee-shop, que consiste nos seguintes passos:
+## Etapa 2: Pipeline de Deploy
+### 2. Implemente uma pipeline no GitlabCI ou Github Actions para o deploy da aplicação Coffee Shop no cluster configurado na etapa anterior. Código-fonte disponível em: https://gitlab.com/o_sgoncalves/coffee-shop.
+#### 2.1 Para a pipeline foi criado o arquivo .git/workflows/coffee-shop_workflos.yaml no repositório da aplicação coffee-shop, que consiste nos seguintes passos:
 
 - Login do Docker Hub
 - Build e Push da imagem da aplicação coffee-shop para o Docker Hub
@@ -241,7 +240,6 @@ Implemente uma pipeline no GitlabCI ou Github Actions para o deploy da aplicaç�
 >
 > PARA CONEXÃO SSH COM A MÁQUINA VIRTUAL DO NODE MANAGER FOI NECESSÁRIO A CRIAÇÃO DE UM PAR DE CHAVES SSH `ssh-keygen -t rsa -b 4096 -C "email@email"`. ESTE PAR DE CHAVES FOI INSERIDO COMO SECRET NAS CONFIGURAÇÕES DO REPOSITÓRIO EM **Settings - Secrets and variables - Actions - New repository secret**
   ![img](./img/github-actions-secrets-and-variables.png)
-
 
 Este workflow utiliza das seguintes variáveis de ambiente para a execução dos jobs:
 
@@ -264,6 +262,7 @@ Este workflow utiliza das seguintes variáveis de ambiente para a execução dos
 - **HOST**: Endereço IP do manager.
 - **SSH_USER**: usuário de autenticação via ssh no manager.
 
+#### 2.2 Workflow da aplicação Coffee Shop
 ```yaml
 ---
 name: Coffee Shop Deploy
@@ -324,7 +323,7 @@ jobs:
 ...
 ```
 
-### Etapa 3: Monitoramento do Sistema
+## Etapa 3: Monitoramento do Sistema
 Configure um sistema de monitoramento (sugerimos prometheus + grafana) para o cluster e a aplicação Coffee Shop
   .
 >[!NOTE]
