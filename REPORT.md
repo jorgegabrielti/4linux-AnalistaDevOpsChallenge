@@ -591,7 +591,7 @@ O painel do Prometheus está disponível em **http://\<IP ADDRESS\>:9090**:
 
 ### Avaliação do desafio
 
->[!NOTA]
+>[!NOTE]
 > O teste proposto foi de fato um desafio técnico para mim. A quase 3 anos que não tinha contato com tecnologias como o Ansible e Docker Swarm, porque em meu dia a dia de trabalho atuava com outras tecnologias. Eu precisei consultar minhas documentações de estudo para refrescar a memória. 
 >
 > Em relação ao Prometheus, não sabia praticamente nada antes do Desafio e particularmente foi gratificante sair do 0 e implementar uma stack de monitoramento baseada nessa ferramenta. Agora estou bem impolgado para estuda-la mais :). 
