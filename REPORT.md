@@ -25,7 +25,7 @@
   BUG_REPORT_URL="https://bugs.debian.org/"
   ```
 
-  #### 1.1.2 Instalei o Ansible 2.10.8 em meu ambiente local WSL 2 Ubuntu 22.04 através do comando:
+  ##### 1.1.2 Instalei o Ansible 2.10.8 em meu ambiente local WSL 2 Ubuntu 22.04 através do comando:
   ```bash
   apt install -y ansible
   ```
@@ -44,7 +44,7 @@
     python version = 3.10.12 (main, Nov 20 2023, 15:14:05) [GCC 11.4.0]
   ```
 
-  #### 1.1.3 Configurei o ambiente Ansible com a seguinte estrutura de diretórios:
+  ##### 1.1.3 Configurei o ambiente Ansible com a seguinte estrutura de diretórios:
   ```text
   ansible
       ├── group_vars
@@ -63,7 +63,7 @@
       │           └── main.yaml
       └── ssh.key
   ```
-  ##### 1.1.3.1 Entendendo a configuração do Ansible:
+  ###### 1.1.3.1 Entendendo a configuração do Ansible:
   >[!IMPORTANT]
   >
   >Os parâmetros **\<IP ADDRESS\>** e **\<PATH\>/\<PUBLIC KEY\>** foram substituídos pelos dados fornecidos.
@@ -116,7 +116,7 @@
 ansible-playbook -i hosts main.yaml
 ```
 
-#### 1.1.5 Validação da instalação
+##### 1.1.5 Validação da instalação
 Após execução com sucesso do playbook Ansible, validei os passos descritos nele para os três hosts.
 
 - Verificando a saída do comando `docker info` **nos três hosts**: 
