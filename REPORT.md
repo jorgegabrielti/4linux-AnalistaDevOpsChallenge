@@ -590,6 +590,12 @@ O painel do Prometheus está disponível em **http://\<IP ADDRESS\>:9090**:
   ![grafana-docker-swarm](./img/grafana-docker-swarm.png)
 
 ## Etapa 4: Relatório Técnico
+### Descrição dos procedimentos, análises, modificaçõs e otimizações
+Estão descritos nas etapas:
+ - Etapa 1: Automação com IaC
+ - Etapa 2: Pipeline de Deploy
+ - Etapa 3: Monitoramento do Sistema
+
 ### Avaliação do desafio
 
 >[!NOTE]
