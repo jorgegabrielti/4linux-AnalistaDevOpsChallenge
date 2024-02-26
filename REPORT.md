@@ -111,7 +111,7 @@
 
   - **Docker Swarm Workes Configuration**: passo macro aplicado nos hosts do grupo **docker_swarm_worker**. Ele aplica as roles de instalação e configuração do Docker e obtenção do token gerado pelo manager e ingresso dos workers no Cluster. Além disso, adiciona o usuário ao grupo docker.
 
-#### 1.1.4 Executei o playbook Ansible para provisionamento do Cluster Docker Swarm:
+##### 1.1.4 Executei o playbook Ansible para provisionamento do Cluster Docker Swarm:
 ```
 ansible-playbook -i hosts main.yaml
 ```
