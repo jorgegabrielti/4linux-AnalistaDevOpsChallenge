@@ -324,19 +324,19 @@ jobs:
 ```
 
 ## Etapa 3: Monitoramento do Sistema
-Configure um sistema de monitoramento (sugerimos prometheus + grafana) para o cluster e a aplicação Coffee Shop
-  .
+### 3. Configure um sistema de monitoramento (sugerimos prometheus + grafana) para o cluster e a aplicação Coffee Shop.
+
 >[!NOTE]
 > 
 > OS PASSOS ABAIXO FORAM EXECUTADOS NO HOST master-01 via pipeline do Github Actions
 
-#### Instalação do Portainer
+#### 3.1 Instalação do Portainer
 >[!NOTE]
 >
 > MELHORIA NO GERENCIAMENTO DO CLUSTER
 
 Instalação e configuração do Portainer para facilitar o gerenciamento do Cluster:
-#### Github Actions Workflow: Portainer Stack Deploy
+##### 3.1.1 Github Actions Workflow: Portainer Stack Deploy
 ```yaml
 ---
 name: Portainer Stack Deploy
@@ -377,7 +377,7 @@ jobs:
 O Portainer esta disponível em http://\<IP ADDRESS\>:9000
 ![portainer](./img/portainer.png)
 
-#### Instalação da Stack de Monitoramento
+#### 3.2 Instalação da Stack de Monitoramento
 Habilitar a exposição de métricas do docker no arquivo **/etc/docker/daemon.json** em todos os hosts do cluster. Esta edição foi feita manualmente:
 ```json
   {
@@ -390,7 +390,7 @@ Habilitar a exposição de métricas do docker no arquivo **/etc/docker/daemon.j
 systemctl restart docker
 ```
 
-#### Instalação e configuração do Prometheus
+#### 3.3 Instalação e configuração do Prometheus
 O arquivo de configuração do Prometheus foi criado em **/home/<USER>/stacks/prometheus.yml**. Este arquivo será montado posteriomente pelo container do Prometheus durante o deploy da stack de monitoramento. Seu conteúdo é o seguinte:
 
 ```yaml
@@ -465,7 +465,7 @@ Ele contém as seguintes configurações:
  - **job_name: coffee-shop**: monitoramento da aplicação coffee-shop.
  - **job_name: cadvisor**: monitoramento do containr do cadvisor.
 
-Criação do arquivo da stack de monitoramento **monitoring-stack.yaml**:
+#### 3.4 Criação do arquivo da stack de monitoramento **monitoring-stack.yaml**:
 ```yaml
 ---
 version: '3.7'
@@ -563,36 +563,37 @@ services:
 ... 
 ```
 
-#### Aplicação da stack de monitoramento no Cluster
+#### 3.5 Aplicação da stack de monitoramento no Cluster
 A stack de monitoramento foi aplicada via pipeline do Github Actions. O workflow está definido no arquivo **.github/workflows/monitoring-stack_workflow.yaml**. No Github, em **Actions - Coffee Shop Deploy - Run workflow - Run workflow**:
 
 ![coffee-shop-deploy-workflow](./img/coffee-shop-deploy-workflow.png)
 
 
-Verificando o status da stack:
+#### 3.6 Verificando o status da stack:
 Após a execução do workflow com sucesso, para validar a aplicação da stack basta logar no host executar o comando abaixo:
 ```bash
 docker stack ps monitoring
 ```
 ![docker-stack-ps-monitoring](./img/docker-stack-ps-monitoring.png)
 
-Validando a coleta de métricas no Painel do Prometheus:
+#### 3.7 Validando a coleta de métricas no Painel do Prometheus:
 O painel do Prometheus está disponível em **http://\<IP ADDRESS\>:9090**:
 ![prometheus-metrics](./img/prometheus-metrics.png)
 
-  Validando os Dashboard do Grafana:
-  O painel do Grafana está disponível em **http://\<IP ADDRESS\>:3001**:
-  ![grafana-coffe-shop](./img/grafana-coffe-shop.png)
-  ![grafana-docker-swarm](./img/grafana-docker-swarm.png)
+#### 3.8 alidando os Dashboard do Grafana:
+O painel do Grafana está disponível em **http://\<IP ADDRESS\>:3001**:
+![grafana-coffe-shop](./img/grafana-coffe-shop.png)
+![grafana-docker-swarm](./img/grafana-docker-swarm.png)
 
 ## Etapa 4: Relatório Técnico
-### Descrição dos procedimentos, análises, modificaçõs e otimizações
+### 4. Descrição dos procedimentos, análises, modificaçõs e otimizações
+#### 4.1 Ordem de implementação do desafio
 Estão descritos nas etapas:
- - Etapa 1: Automação com IaC
- - Etapa 2: Pipeline de Deploy
- - Etapa 3: Monitoramento do Sistema
+- Etapa 1: Automação com IaC
+- Etapa 2: Pipeline de Deploy
+- Etapa 3: Monitoramento do Sistema
 
-### Avaliação do desafio
+#### 4.2 Avaliação do desafio
 
 >[!NOTE]
 > O teste proposto foi de fato um desafio técnico para mim. A quase 3 anos que não tinha contato com tecnologias como o Ansible e Docker Swarm, porque em meu dia a dia de trabalho atuava com outras tecnologias. Eu precisei consultar minhas documentações de estudo para refrescar a memória. 
@@ -604,20 +605,20 @@ Estão descritos nas etapas:
 > A respeito da execução do que foi pedido, eu finalizei no sábado a tarde, dia 24 de Fevereiro de 2024. A partir daí, iniciei o processo de escrita deste relatório, refinando o ambiente e implementando melhorias.
 
 
-### Status atual do ambiente:
+#### 4.3 Status atual do ambiente:
 - [x] Etapa 1: Automação com IaC (Infrastructure As Code)
 - [x] Etapa 2: Pipeline de Deploy 
 - [x] Etapa 3: Monitoramento do Sistema
 - [x] Implementação Extra do Traefik como proxy
 
-### Recomendação futura:
+#### 4.4 Recomendação futura:
 - [x] Definição de um fluxo de CI/CD para ambientes de dev,hom e prod.
 - [x] Otmização do processo de build para que seja o mais efetivo e menos demorado possível.
 - [x] Implementação de proxy reverso com Traefik para controle de acesso centralizado através de subdomínios em todos os recursos implementados no Cluster Swarm.
 - [x] Implementação de logs.
 - [x] Implementação de tracing.
 
-
+#### 4.5 Pendência
 >[!NOTE]
 > 
 > Eu iniciei a implementação do Traefik, porém não soube faze-lo funcionar da maneira adequada para a configuração do proxy reverso para aplicação Coffee Shop. Este é um ponto de melhoria que requer mais estudos da minha parte.
@@ -625,9 +626,8 @@ O Traefik está disponível na endereço http://\<IP ADDRESS\>:8081:
 
 ![traefik-dashboard](./img/traefik-dashboard.png)
 
-
-
 <!---
+COMENTÁRIOS
   Essa abordagem está funcionando:
   ```bash
   docker run -d --name prometheus \
